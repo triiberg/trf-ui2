@@ -25,9 +25,14 @@ import {
   DialogTrigger,
   EmptyState,
   Field,
+  Grow,
   Input,
   Label,
   LoadingState,
+  Page,
+  PageHeader,
+  Row,
+  Stack,
   RadioGroup,
   RadioGroupItem,
   Select,
@@ -230,6 +235,55 @@ export function App() {
           <Badge variant="warning">Warning</Badge>
           <Badge variant="destructive">Destructive</Badge>
           <Badge variant="outline">Outline</Badge>
+        </Section>
+
+        <Section title="Layout & page" nav="Layout">
+          <div className="flex w-full flex-col gap-5">
+            <div className="rounded-lg border border-border p-4">
+              <PageHeader
+                title="Invoices"
+                description="Sales documents for this organisation."
+                actions={
+                  <>
+                    <Button variant="secondary" size="sm">
+                      Export
+                    </Button>
+                    <Button size="sm">New invoice</Button>
+                  </>
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                ↑ <code>PageHeader</code> — title · description · actions
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-border p-4">
+              <Row gap={3}>
+                <Button variant="secondary" size="sm">
+                  Back
+                </Button>
+                <Grow>
+                  <Input placeholder="Grow fills the remaining space" />
+                </Grow>
+                <Button size="sm">Save</Button>
+              </Row>
+              <p className="mt-2 text-xs text-muted-foreground">
+                ↑ <code>Row</code> with a <code>Grow</code> in the middle
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-border p-4">
+              <Stack gap={2}>
+                <div className="rounded-md bg-muted px-3 py-2 text-sm">Stack item 1</div>
+                <div className="rounded-md bg-muted px-3 py-2 text-sm">Stack item 2</div>
+                <div className="rounded-md bg-muted px-3 py-2 text-sm">Stack item 3</div>
+              </Stack>
+              <p className="mt-2 text-xs text-muted-foreground">
+                ↑ <code>Stack</code> — vertical, even gap. <code>Page</code> wraps all of this in a
+                centered, width-capped container.
+              </p>
+            </div>
+          </div>
         </Section>
 
         <Section title="Forms">

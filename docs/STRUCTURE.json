@@ -17,6 +17,11 @@
     "open-questions.md": "Living parking lot: unresolved decisions and future plans (i18n, analytics, typography scale, theming). File questions here instead of guessing."
   },
   "components": {
+    "Page": "08-ui-components/layout.md",
+    "PageHeader": "08-ui-components/layout.md",
+    "Stack": "08-ui-components/layout.md",
+    "Row": "08-ui-components/layout.md",
+    "Grow": "08-ui-components/layout.md",
     "Button": "08-ui-components/button.md",
     "Select": "08-ui-components/select.md",
     "Checkbox": "08-ui-components/form-controls.md",
@@ -47,6 +52,7 @@
     "08-ui-components/select.md": "ready",
     "08-ui-components/form-controls.md": "ready",
     "08-ui-components/feedback.md": "ready",
-    "08-ui-components/table.md": "ready"
+    "08-ui-components/table.md": "ready",
+    "08-ui-components/layout.md": "ready"
   }
 }

@@ -5,6 +5,14 @@
 // Utils
 export { cn } from "./lib/utils";
 
+// --- Layout & page scaffolding ---
+export { Stack } from "./components/stack";
+export type { StackProps } from "./components/stack";
+export { Row, Grow } from "./components/row";
+export type { RowProps } from "./components/row";
+export { Page, PageHeader } from "./components/page";
+export type { PageProps, PageSize, PageHeaderProps } from "./components/page";
+
 // Primitives
 export { Button, buttonVariants } from "./components/ui/button";
 export type { ButtonProps, ButtonVariant, ButtonSize } from "./components/ui/button";
@@ -101,4 +109,5 @@ export {
 export { DataTable } from "./components/data-table";
 export type { DataTableProps } from "./components/data-table";
 // Re-exported so apps type their columns without importing @tanstack/react-table directly.
-export type { ColumnDef, CellContext, Row } from "@tanstack/react-table";
+// (TanStack's `Row` is aliased to avoid colliding with the layout `Row` component.)
+export type { ColumnDef, CellContext, Row as DataTableRow } from "@tanstack/react-table";
