@@ -16,7 +16,23 @@
     "for-consuming-apps.md": "How one of the 14 TRF apps adopts trf-ui2, plus the AGENTS.md pointer snippet."
   },
   "components": {
-    "Button": "08-ui-components/button.md"
+    "Button": "08-ui-components/button.md",
+    "Select": "08-ui-components/select.md",
+    "Checkbox": "08-ui-components/form-controls.md",
+    "Switch": "08-ui-components/form-controls.md",
+    "RadioGroup": "08-ui-components/form-controls.md",
+    "Alert": "08-ui-components/feedback.md",
+    "EmptyState": "08-ui-components/feedback.md",
+    "LoadingState": "08-ui-components/feedback.md",
+    "Tooltip": "08-ui-components/feedback.md",
+    "Badge": "(see src/components/ui/badge.tsx — doc pending)",
+    "Input": "(see src/components/ui/input.tsx — doc pending)",
+    "Textarea": "(see src/components/ui/textarea.tsx — doc pending)",
+    "Field": "(see src/components/ui/field.tsx — doc pending)",
+    "Card": "(see src/components/ui/card.tsx — doc pending)",
+    "Dialog": "(see src/components/ui/dialog.tsx — doc pending)",
+    "Separator": "(see src/components/ui/separator.tsx — doc pending)",
+    "Spinner": "(see src/components/ui/spinner.tsx — doc pending)"
   },
   "status": {
     "legend": { "ready": "Follow as-is", "draft": "Usable, may change", "scaffold": "Structure only" },
@@ -24,6 +40,9 @@
     "05-iconography.md": "ready",
     "07-component-architecture.md": "ready",
     "13-ai-coding-guidelines.md": "ready",
-    "08-ui-components/button.md": "ready"
+    "08-ui-components/button.md": "ready",
+    "08-ui-components/select.md": "ready",
+    "08-ui-components/form-controls.md": "ready",
+    "08-ui-components/feedback.md": "ready"
   }
 }

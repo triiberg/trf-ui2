@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
-import { Moon, Sun, Search, Save, Trash2 } from "lucide-react";
+import { Moon, Sun, Search, Save, Trash2, Info, Inbox } from "lucide-react";
 import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   Badge,
   Button,
   Card,
@@ -9,6 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Checkbox,
   Dialog,
   DialogClose,
   DialogContent,
@@ -17,11 +21,25 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  EmptyState,
   Field,
   Input,
+  LoadingState,
+  RadioGroup,
+  RadioGroupItem,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Separator,
   Spinner,
+  Switch,
   Textarea,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from "@trf/ui2";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -49,6 +67,7 @@ export function App() {
   }, [radius]);
 
   return (
+    <TooltipProvider delayDuration={200}>
     <div className="min-h-screen">
       {/* Header / controls */}
       <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-border bg-background/80 px-6 py-3 backdrop-blur">
@@ -115,10 +134,81 @@ export function App() {
           </div>
         </Section>
 
-        <Section title="Spinner">
+        <Section title="Select">
+          <Field label="Document type" htmlFor="doctype" className="w-64">
+            <Select defaultValue="invoice">
+              <SelectTrigger id="doctype">
+                <SelectValue placeholder="Pick a type…" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="invoice">Invoice</SelectItem>
+                <SelectItem value="offer">Offer</SelectItem>
+                <SelectItem value="waybill">Waybill</SelectItem>
+              </SelectContent>
+            </Select>
+          </Field>
+        </Section>
+
+        <Section title="Choice controls">
+          <label className="flex items-center gap-2 text-sm">
+            <Checkbox defaultChecked /> Send a copy by email
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <Switch defaultChecked /> Auto-confirm
+          </label>
+          <RadioGroup defaultValue="net14" className="gap-2">
+            <label className="flex items-center gap-2 text-sm">
+              <RadioGroupItem value="net14" /> Net 14
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <RadioGroupItem value="net30" /> Net 30
+            </label>
+          </RadioGroup>
+        </Section>
+
+        <Section title="Tooltip">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="secondary" size="sm">
+                <Info /> Hover me
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Reference number is optional.</TooltipContent>
+          </Tooltip>
+        </Section>
+
+        <Section title="Alerts">
+          <div className="flex w-full flex-col gap-3">
+            <Alert>
+              <Info />
+              <div>
+                <AlertTitle>Heads up</AlertTitle>
+                <AlertDescription>This invoice has no line items yet.</AlertDescription>
+              </div>
+            </Alert>
+            <Alert variant="destructive">
+              <Trash2 />
+              <div>
+                <AlertTitle>Could not save</AlertTitle>
+                <AlertDescription>The customer field is required.</AlertDescription>
+              </div>
+            </Alert>
+          </div>
+        </Section>
+
+        <Section title="Spinner / states">
           <Spinner size="sm" />
           <Spinner size="md" />
           <Spinner size="lg" />
+          <div className="w-full" />
+          <LoadingState className="w-64 rounded-lg border border-border" />
+          <EmptyState
+            className="w-72"
+            icon={<Inbox />}
+            title="No invoices yet"
+            description="Create your first invoice to get started."
+            action={<Button size="sm">New invoice</Button>}
+          />
         </Section>
 
         <Section title="Card + Dialog">
@@ -165,5 +255,6 @@ export function App() {
         </Section>
       </main>
     </div>
+    </TooltipProvider>
   );
 }

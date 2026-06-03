@@ -49,3 +49,36 @@ export {
   DialogTitle,
   DialogDescription,
 } from "./components/ui/dialog";
+
+// --- Phase 2: forms & feedback ---
+
+export { Checkbox } from "./components/ui/checkbox";
+export { Switch } from "./components/ui/switch";
+export { RadioGroup, RadioGroupItem } from "./components/ui/radio-group";
+
+export {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "./components/ui/tooltip";
+
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} from "./components/ui/select";
+
+export { Alert, AlertTitle, AlertDescription, alertVariants } from "./components/ui/alert";
+export type { AlertProps, AlertVariant } from "./components/ui/alert";
+
+export { EmptyState } from "./components/empty-state";
+export type { EmptyStateProps } from "./components/empty-state";
+
+export { LoadingState } from "./components/loading-state";
+export type { LoadingStateProps } from "./components/loading-state";

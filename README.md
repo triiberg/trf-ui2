@@ -60,6 +60,9 @@ clsx + tailwind-merge (`cn()`) · Lucide icons.
 
 ## Status
 
-**Phase 1** — foundation + core primitives (Button, Badge, Input, Textarea, Label, Field, Card,
-Spinner, Separator, Dialog) + the AI docs layer. Forms, complex/interactive components, and the
-app shell follow in later phases. See the project plan / `docs/STRUCTURE.json`.
+- **Phase 1** ✅ — foundation + core primitives (Button, Badge, Input, Textarea, Label, Field,
+  Card, Spinner, Separator, Dialog) + the AI docs layer.
+- **Phase 2** ✅ — forms & feedback (Select, Checkbox, Switch, RadioGroup, Tooltip, Alert,
+  EmptyState, LoadingState).
+- **Next** — complex/interactive (DropdownMenu, Tabs, Combobox, Table/DataTable) and the app
+  shell (AppShell, SideMenu, Page/PageHeader, typography). See `docs/STRUCTURE.json`.
