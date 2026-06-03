@@ -6,6 +6,8 @@ import {
   AlertTitle,
   Badge,
   Button,
+  type ColumnDef,
+  DataTable,
   Card,
   CardContent,
   CardDescription,
@@ -50,6 +52,69 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       </h2>
       <div className="flex flex-wrap items-start gap-3">{children}</div>
     </section>
+  );
+}
+
+type Invoice = {
+  number: string;
+  customer: string;
+  status: "Draft" | "Confirmed" | "Paid";
+  total: number;
+};
+
+const STATUS_VARIANT = {
+  Draft: "secondary",
+  Confirmed: "default",
+  Paid: "success",
+} as const;
+
+function InvoiceTable() {
+  const [rows, setRows] = useState<Invoice[]>([
+    { number: "1042", customer: "100 Meedia Brändi OÜ", status: "Paid", total: 1240 },
+    { number: "1041", customer: "Triiberg AS", status: "Confirmed", total: 380.5 },
+    { number: "1040", customer: "Foam Labs", status: "Draft", total: 96 },
+    { number: "1039", customer: "Northwind OÜ", status: "Confirmed", total: 5120 },
+  ]);
+
+  const columns: ColumnDef<Invoice>[] = [
+    { id: "number", accessorKey: "number", header: "Number" },
+    { id: "customer", accessorKey: "customer", header: "Customer", meta: { editable: true } },
+    {
+      id: "status",
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ getValue }) => {
+        const s = getValue() as Invoice["status"];
+        return <Badge variant={STATUS_VARIANT[s]}>{s}</Badge>;
+      },
+    },
+    {
+      id: "total",
+      accessorKey: "total",
+      header: "Total",
+      meta: { editable: true, align: "right" },
+      cell: ({ getValue }) =>
+        `€${(getValue() as number).toLocaleString("en", { minimumFractionDigits: 2 })}`,
+    },
+  ];
+
+  return (
+    <DataTable
+      columns={columns}
+      data={rows}
+      enableSorting
+      enableGlobalFilter
+      enableColumnReorder
+      onCellEdit={(rowIndex, columnId, value) =>
+        setRows((prev) =>
+          prev.map((r, i) =>
+            i === rowIndex
+              ? { ...r, [columnId]: columnId === "total" ? Number(value) || 0 : value }
+              : r
+          )
+        )
+      }
+    />
   );
 }
 
@@ -131,6 +196,16 @@ export function App() {
             <Field label="Comment" htmlFor="comment" className="sm:col-span-2">
               <Textarea id="comment" placeholder="Free-text notes…" />
             </Field>
+          </div>
+        </Section>
+
+        <Section title="DataTable — sort · filter · drag-reorder columns · inline edit">
+          <div className="w-full">
+            <p className="mb-2 text-xs text-muted-foreground">
+              Click headers to sort · type to filter · drag the grip to reorder columns · click
+              Customer or Total to edit inline.
+            </p>
+            <InvoiceTable />
           </div>
         </Section>
 

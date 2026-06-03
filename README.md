@@ -64,5 +64,9 @@ clsx + tailwind-merge (`cn()`) · Lucide icons.
   Card, Spinner, Separator, Dialog) + the AI docs layer.
 - **Phase 2** ✅ — forms & feedback (Select, Checkbox, Switch, RadioGroup, Tooltip, Alert,
   EmptyState, LoadingState).
-- **Next** — complex/interactive (DropdownMenu, Tabs, Combobox, Table/DataTable) and the app
-  shell (AppShell, SideMenu, Page/PageHeader, typography). See `docs/STRUCTURE.json`.
+- **Tables** ✅ — `Table` primitives (dependency-free) + `DataTable` (TanStack + dnd-kit:
+  sorting, global filter, column drag-reorder, inline editing). TanStack chosen over AG Grid to
+  keep ownership + token-native styling; AG Grid was evaluated and reserved for any future
+  Excel-grade grid only.
+- **Next** — DropdownMenu, Tabs, Combobox, and the app shell (AppShell, SideMenu, Page/
+  PageHeader, typography). See `docs/STRUCTURE.json`.

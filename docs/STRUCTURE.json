@@ -25,6 +25,8 @@
     "EmptyState": "08-ui-components/feedback.md",
     "LoadingState": "08-ui-components/feedback.md",
     "Tooltip": "08-ui-components/feedback.md",
+    "Table": "08-ui-components/table.md",
+    "DataTable": "08-ui-components/table.md",
     "Badge": "(see src/components/ui/badge.tsx — doc pending)",
     "Input": "(see src/components/ui/input.tsx — doc pending)",
     "Textarea": "(see src/components/ui/textarea.tsx — doc pending)",
@@ -43,6 +45,7 @@
     "08-ui-components/button.md": "ready",
     "08-ui-components/select.md": "ready",
     "08-ui-components/form-controls.md": "ready",
-    "08-ui-components/feedback.md": "ready"
+    "08-ui-components/feedback.md": "ready",
+    "08-ui-components/table.md": "ready"
   }
 }

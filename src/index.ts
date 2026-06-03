@@ -82,3 +82,23 @@ export type { EmptyStateProps } from "./components/empty-state";
 
 export { LoadingState } from "./components/loading-state";
 export type { LoadingStateProps } from "./components/loading-state";
+
+// --- Tables ---
+
+// Low-level primitives (dependency-free) — for simple/static tables.
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from "./components/ui/table";
+
+// TanStack-powered DataTable — sort, filter, column reorder, inline edit.
+export { DataTable } from "./components/data-table";
+export type { DataTableProps } from "./components/data-table";
+// Re-exported so apps type their columns without importing @tanstack/react-table directly.
+export type { ColumnDef, CellContext, Row } from "@tanstack/react-table";
