@@ -15,7 +15,8 @@
 ## 🟡 Open
 
 ### Q1 — Typography: fixed type scale, or loose?
-**Raised by:** Claude · **Blocks:** `H1/H2/H3`, `Text` components.
+**Raised by:** Claude · **Blocks:** `H1/H2/H3`, `Text` components · **Scheduled:** decide
+2026-06-04 (Jaak).
 
 - **Option A — fixed scale, few styles, no exceptions** (e.g. H1, H2, H3, body, small, label).
   One weight policy (the reference system used `font-semibold` only — banned `font-bold`/700).
@@ -23,7 +24,10 @@
 - **Option B — looser set** of Tailwind size utilities with light guidance. Pros: flexible.
   Cons: drift, off-scale sizes creep in.
 - **Considerations:** expose sizes as tokens? line-height & letter-spacing policy; weight policy;
-  mono font for table numbers; how the apps use `H2` (25×) and `Text` (24×) today.
+  how the apps use `H2` (25×) and `Text` (24×) today.
+- **🟢 Decided already (Jaak):** **use monospace (`--font-mono`) for tables and numbers** —
+  numeric/table cells get `font-mono` + `tabular-nums` (aligned digits). To apply across
+  `Table`, `DataTable`, and any numeric `Text` when we build typography tomorrow.
 
 ### Q2 — Localization / i18n
 **Raised by:** Jaak.
