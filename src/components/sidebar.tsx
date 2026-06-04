@@ -36,13 +36,20 @@ export function useSidebar() {
 
 export interface SidebarProviderProps {
   defaultCollapsed?: boolean;
+  /** Initial open group ids (uncontrolled). */
   defaultOpenGroups?: string[];
+  /** Controlled open group ids — pass with onOpenGroupsChange to drive open state from the app
+   *  (e.g. auto-open the active route's group once an async menu has loaded). */
+  openGroups?: string[];
+  onOpenGroupsChange?: (ids: string[]) => void;
   children: React.ReactNode;
 }
 
 export function SidebarProvider({
   defaultCollapsed = false,
   defaultOpenGroups = [],
+  openGroups: openGroupsProp,
+  onOpenGroupsChange,
   children,
 }: SidebarProviderProps) {
   const [collapsed, setCollapsedState] = React.useState<boolean>(() => {
@@ -50,26 +57,51 @@ export function SidebarProvider({
     const stored = window.localStorage.getItem(COLLAPSE_KEY);
     return stored == null ? defaultCollapsed : stored === "1";
   });
-  const [openGroups, setOpenGroups] = React.useState<Set<string>>(
-    () => new Set(defaultOpenGroups)
+  const [openGroups, setOpenGroupsState] = React.useState<Set<string>>(
+    () => new Set(openGroupsProp ?? defaultOpenGroups)
   );
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const savedGroups = React.useRef<Set<string> | null>(null);
+
+  // Controlled mode: keep internal state in sync with the `openGroups` prop.
+  React.useEffect(() => {
+    if (openGroupsProp == null) return;
+    setOpenGroupsState((prev) => {
+      const next = new Set(openGroupsProp);
+      const same = next.size === prev.size && [...next].every((x) => prev.has(x));
+      return same ? prev : next;
+    });
+  }, [openGroupsProp]);
+
+  // Update internal state AND notify the parent (so controlled usage stays in sync).
+  const setOpenGroups = React.useCallback(
+    (updater: Set<string> | ((prev: Set<string>) => Set<string>)) => {
+      setOpenGroupsState((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater;
+        onOpenGroupsChange?.([...next]);
+        return next;
+      });
+    },
+    [onOpenGroupsChange]
+  );
 
   const setCollapsed = React.useCallback((v: boolean) => {
     setCollapsedState(v);
     if (typeof window !== "undefined") window.localStorage.setItem(COLLAPSE_KEY, v ? "1" : "0");
   }, []);
 
-  const toggleGroup = React.useCallback((id: string, forceOpen?: boolean) => {
-    setOpenGroups((prev) => {
-      const next = new Set(prev);
-      if (forceOpen) next.add(id);
-      else if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }, []);
+  const toggleGroup = React.useCallback(
+    (id: string, forceOpen?: boolean) => {
+      setOpenGroups((prev) => {
+        const next = new Set(prev);
+        if (forceOpen) next.add(id);
+        else if (next.has(id)) next.delete(id);
+        else next.add(id);
+        return next;
+      });
+    },
+    [setOpenGroups]
+  );
 
   // Staged collapse: close accordions first, then narrow (and reverse on expand).
   const toggleCollapsed = React.useCallback(() => {
@@ -82,7 +114,7 @@ export function SidebarProvider({
       const restore = savedGroups.current;
       if (restore) window.setTimeout(() => setOpenGroups(restore), 220);
     }
-  }, [collapsed, openGroups, setCollapsed]);
+  }, [collapsed, openGroups, setCollapsed, setOpenGroups]);
 
   const value = React.useMemo<SidebarContextValue>(
     () => ({
@@ -365,6 +397,9 @@ export interface AppShellProps {
   children: React.ReactNode;
   defaultCollapsed?: boolean;
   defaultOpenGroups?: string[];
+  /** Controlled open groups (with onOpenGroupsChange) — e.g. to auto-open the active route. */
+  openGroups?: string[];
+  onOpenGroupsChange?: (ids: string[]) => void;
   className?: string;
 }
 
@@ -373,10 +408,17 @@ export function AppShell({
   children,
   defaultCollapsed,
   defaultOpenGroups,
+  openGroups,
+  onOpenGroupsChange,
   className,
 }: AppShellProps) {
   return (
-    <SidebarProvider defaultCollapsed={defaultCollapsed} defaultOpenGroups={defaultOpenGroups}>
+    <SidebarProvider
+      defaultCollapsed={defaultCollapsed}
+      defaultOpenGroups={defaultOpenGroups}
+      openGroups={openGroups}
+      onOpenGroupsChange={onOpenGroupsChange}
+    >
       <div className={cn("flex h-dvh w-full overflow-hidden", className)}>
         {sidebar}
         <SidebarInset>{children}</SidebarInset>
