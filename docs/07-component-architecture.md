@@ -34,9 +34,24 @@ from it.
 
 ## Conventions
 
+We follow the **[components.build](https://www.components.build)** standard (the shadcn /
+Hayden Bleasel spec — the same lineage as our shadcn foundation). We adopt its *conventions*, not
+its public-registry distribution (our raw-`.tsx`-via-`github:` is intentionally simpler).
+
+- **Composition over configuration.** Prefer compound parts (`Card.*`, `Dialog.*`, `Select.*`)
+  over mega-prop components. Let consumers arrange the pieces.
+- **Polymorphism via `asChild`.** Anything that might render as a different element (link, router
+  `Link`, button) takes `asChild` and uses Radix `Slot` to merge styles onto the child. Applies
+  to `Button`, `Badge`, and any future actionable/visual element.
+- **State via `data-*` attributes.** Style from `data-[state=…]` / `data-disabled` (Radix sets
+  these) rather than boolean class soup — declarative and inspectable.
+- **Refs forward to the root.** Radix wrappers use `forwardRef`; own components forward via
+  React 19's ref-as-prop (spread `{...props}` onto the single root element). Either way a ref
+  reaches the DOM node.
 - **Variants via CVA** for any component with more than one variant. Variants are typed props,
   not className overrides. (`buttonVariants({ variant, size })`.)
 - **`cn()`** from `@trf/ui2` for all class merging — never raw template-literal Tailwind.
+- **Tokens, not values.** All visuals come from the token layer (see `03-design-tokens.md`).
 - **Barrel export required.** Unlike some shadcn setups, trf-ui2 **must** keep `src/index.ts`
   because it's consumed as a `github:` package. Add every new component to it.
 - **Stay close to HTML.** Props mirror native attributes; let consumers compose, don't hide
