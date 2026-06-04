@@ -162,6 +162,8 @@ export type { EmptyStateProps } from "./components/empty-state";
 export { LoadingState } from "./components/loading-state";
 export type { LoadingStateProps } from "./components/loading-state";
 
+export { Skeleton } from "./components/ui/skeleton";
+
 // --- Tables ---
 
 // Low-level primitives (dependency-free) — for simple/static tables.

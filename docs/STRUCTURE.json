@@ -54,7 +54,8 @@
     "Popover": "08-ui-components/combobox.md",
     "Command": "08-ui-components/combobox.md",
     "InfoGrid": "08-ui-components/info-grid.md",
-    "StatusBadge": "08-ui-components/status-badge.md"
+    "StatusBadge": "08-ui-components/status-badge.md",
+    "Skeleton": "08-ui-components/skeleton.md"
   },
   "status": {
     "legend": {
@@ -78,6 +79,7 @@
     "08-ui-components/tabs.md": "ready",
     "08-ui-components/combobox.md": "ready",
     "08-ui-components/info-grid.md": "ready",
-    "08-ui-components/status-badge.md": "ready"
+    "08-ui-components/status-badge.md": "ready",
+    "08-ui-components/skeleton.md": "ready"
   }
 }

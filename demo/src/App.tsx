@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
   EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState,
   Logo, PageHeader, Row, Stack, Text, RadioGroup, RadioGroupItem, Select, SelectContent,
-  SelectItem, SelectTrigger, SelectValue, Separator, Spinner, StatusBadge, Switch, Tabs, TabsContent, TabsList,
+  SelectItem, SelectTrigger, SelectValue, Separator, Skeleton, Spinner, StatusBadge, Switch, Tabs, TabsContent, TabsList,
   TabsTrigger, Table, TableBody, TableCell,
   TableFooter, TableHead, TableHeader, TableRow, Textarea, Tooltip, TooltipContent,
   TooltipProvider, TooltipTrigger,
@@ -378,6 +378,20 @@ const GROUPS: GroupDef[] = [
           <div className="flex w-full max-w-xl flex-col gap-3">
             <Alert><Info /><div><AlertTitle>Heads up</AlertTitle><AlertDescription>This invoice has no line items yet.</AlertDescription></div></Alert>
             <Alert variant="destructive"><Trash2 /><div><AlertTitle>Could not save</AlertTitle><AlertDescription>The customer field is required.</AlertDescription></div></Alert>
+          </div>
+        ),
+      },
+      {
+        id: "skeleton", label: "Skeleton", render: () => (
+          <div className="w-full max-w-sm rounded-lg border border-border p-4">
+            <div className="flex items-center gap-3">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="flex flex-1 flex-col gap-2">
+                <Skeleton className="h-3.5 w-2/3" />
+                <Skeleton className="h-3 w-1/3" />
+              </div>
+            </div>
+            <Skeleton className="mt-4 h-20 w-full" />
           </div>
         ),
       },
