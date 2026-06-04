@@ -243,8 +243,11 @@ export function SidebarMenuButton({
     onClick?.(e as React.MouseEvent<HTMLButtonElement>);
   };
 
+  // pl-3 + the SidebarMenu's px-2 ⇒ icon left = 8+12 = 20px ⇒ icon CENTER = 28px = rail centre
+  // (56/2), the same vertical line as the header logo. Padding is identical expanded/collapsed,
+  // so the icon never moves. Keep these in sync if SidebarMenu's px-* changes.
   const classes = cn(
-    "flex w-full items-center rounded-md py-1.5 pl-5 pr-3 text-left text-sm transition-colors",
+    "flex w-full items-center rounded-md py-1.5 pl-3 pr-3 text-left text-sm transition-colors",
     isActive
       ? "bg-primary/10 font-medium text-primary"
       : "text-foreground hover:bg-accent hover:text-accent-foreground",
