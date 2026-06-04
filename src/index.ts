@@ -50,6 +50,9 @@ export type { ButtonProps, ButtonVariant, ButtonSize } from "./components/ui/but
 export { Badge, badgeVariants } from "./components/ui/badge";
 export type { BadgeProps, BadgeVariant } from "./components/ui/badge";
 
+export { StatusBadge, statusVariants } from "./components/ui/status-badge";
+export type { StatusBadgeProps, StatusTone } from "./components/ui/status-badge";
+
 export { Input } from "./components/ui/input";
 export type { InputProps } from "./components/ui/input";
 

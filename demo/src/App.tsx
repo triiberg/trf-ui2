@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
   EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState,
   Logo, PageHeader, Row, Stack, Text, RadioGroup, RadioGroupItem, Select, SelectContent,
-  SelectItem, SelectTrigger, SelectValue, Separator, Spinner, Switch, Tabs, TabsContent, TabsList,
+  SelectItem, SelectTrigger, SelectValue, Separator, Spinner, StatusBadge, Switch, Tabs, TabsContent, TabsList,
   TabsTrigger, Table, TableBody, TableCell,
   TableFooter, TableHead, TableHeader, TableRow, Textarea, Tooltip, TooltipContent,
   TooltipProvider, TooltipTrigger,
@@ -324,6 +324,17 @@ const GROUPS: GroupDef[] = [
               </SelectContent>
             </Select>
           </Field>
+        ),
+      },
+      {
+        id: "statusbadge", label: "Status badge", render: () => (
+          <>
+            <StatusBadge tone="neutral">Draft</StatusBadge>
+            <StatusBadge tone="info">Confirmed</StatusBadge>
+            <StatusBadge tone="success">Paid</StatusBadge>
+            <StatusBadge tone="warning">Overdue</StatusBadge>
+            <StatusBadge tone="error">Cancelled</StatusBadge>
+          </>
         ),
       },
       { id: "combobox", label: "Combobox", render: () => <ComboboxDemo /> },
