@@ -25,9 +25,33 @@
   Cons: drift, off-scale sizes creep in.
 - **Considerations:** expose sizes as tokens? line-height & letter-spacing policy; weight policy;
   how the apps use `H2` (25×) and `Text` (24×) today.
-- **🟢 Decided already (Jaak):** **use monospace (`--font-mono`) for tables and numbers** —
-  numeric/table cells get `font-mono` + `tabular-nums` (aligned digits). To apply across
-  `Table`, `DataTable`, and any numeric `Text` when we build typography tomorrow.
+- **🟢 Decided (Jaak): monospace for tables and numbers** — numeric/table cells get `font-mono`
+  + `tabular-nums` (aligned digits). Apply across `Table`, `DataTable`, and numeric `Text`.
+- **🟢 Decided (Jaak): one-knob scaling.** All text sizes derive from a single constant
+  **`--font-scale`** (default 1), exactly like `--radius` does for corners — change one number,
+  every text size scales proportionally.
+- **🟢 Decided (Jaak): respect browser font size (accessibility).** All sizes in **`rem`**;
+  never hardcode a px root font-size; never use px for type. The user's browser font-size / zoom
+  must scale the whole UI. `--font-scale` composes **on top of** the browser setting
+  (browser × app scale), it does not replace it. *(Current state already complies — no root px
+  is set; guard against regressions.)*
+- **🟢 Decided (Jaak): future in-app size setting.** A **bracketed, not freeform** control —
+  e.g. **S / M / L** — that just sets `--font-scale` (e.g. S ≈ 0.9375, M = 1, L ≈ 1.0625),
+  surfaced in app settings later. Same mechanism, zero new machinery.
+
+- **Benchmark — Claude (measured live on claude.ai + desktop-app screenshot):** font = Anthropic
+  Sans; **root 16, body 14** (dominant), **small 12**, with 16/20 for emphasis and a 40px hero
+  greeting. The dense app lives almost entirely in a **12–14 band with no big headings** —
+  hierarchy is **weight + color** driven, not size. trf-ui2 already matches root/body/small.
+- **Candidate direction (to decide):** a **tight, weight-driven scale** suited to the data-dense
+  TRF apps — 12 / 14 / 16 carry ~90% of the UI (hierarchy via 400/500/600 weight + muted color),
+  with ~20 and a ~32 *display* size reserved for sparse moments (dashboards, empty states, hero).
+  Body stays 14, root 16. This is denser than trf-ui2's current 18/24 heading jumps.
+- **Implementation (mirror `--radius`):** in `@theme inline`, define `--text-xs … --text-2xl`
+  (and their line-heights) as `calc(<rem-base> * var(--font-scale))`; set `--font-scale` on
+  `:root`. Then `H1/H2/H3/Text` map to these steps; `PageHeader`/`Dialog` adopt them; table
+  numbers get `font-mono` + `tabular-nums`. Add a sink **font-size slider** (like the radius one)
+  to prove the one-knob behaviour.
 
 ### Q2 — Localization / i18n
 **Raised by:** Jaak.
