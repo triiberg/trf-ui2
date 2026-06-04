@@ -247,8 +247,8 @@ export function App() {
             <Logo size={16} />
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex size-14 items-center justify-center rounded-lg bg-brand">
-              <Logo size={32} className="text-brand-foreground" />
+            <div className="flex size-14 items-center justify-center rounded-lg bg-primary">
+              <Logo size={32} className="text-primary-foreground" />
             </div>
             <div className="flex size-14 items-center justify-center rounded-lg bg-foreground">
               <Logo size={32} className="text-background" />
@@ -258,8 +258,8 @@ export function App() {
             </div>
           </div>
           <p className="w-full text-xs text-muted-foreground">
-            <code>Logo</code> defaults to <code>text-brand</code> (fixed amber identity) — separate
-            from <code>--primary</code> (the action color: sea-blue in light, amber in dark).
+            <code>Logo</code> defaults to <code>text-primary</code> — tracks the brand/action color
+            per theme (sea-blue in light, amber in dark). Override via <code>className</code>.
           </p>
         </Section>
 
