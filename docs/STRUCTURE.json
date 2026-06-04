@@ -37,6 +37,7 @@
     "Tooltip": "08-ui-components/feedback.md",
     "Table": "08-ui-components/table.md",
     "DataTable": "08-ui-components/table.md",
+    "Logo": "(TRF brand mark — see src/components/logo.tsx; currentColor, defaults to text-primary)",
     "Badge": "(see src/components/ui/badge.tsx — doc pending)",
     "Input": "(see src/components/ui/input.tsx — doc pending)",
     "Textarea": "(see src/components/ui/textarea.tsx — doc pending)",

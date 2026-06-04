@@ -5,6 +5,10 @@
 // Utils
 export { cn } from "./lib/utils";
 
+// --- Brand ---
+export { Logo } from "./components/logo";
+export type { LogoProps } from "./components/logo";
+
 // --- Typography ---
 export { H1, H2, H3, Text } from "./components/typography";
 export type { HeadingProps, TextProps } from "./components/typography";

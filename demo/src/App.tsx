@@ -32,6 +32,7 @@ import {
   Input,
   Label,
   LoadingState,
+  Logo,
   Page,
   PageHeader,
   Row,
@@ -197,7 +198,8 @@ export function App() {
       {/* Sticky header + table of contents */}
       <div className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
         <header className="flex items-center justify-between gap-4 px-6 py-3">
-          <div className="flex items-baseline gap-3">
+          <div className="flex items-center gap-2">
+            <Logo size={24} />
             <span className="text-lg font-semibold">trf-ui2</span>
             <span className="text-sm text-muted-foreground">kitchen sink</span>
           </div>
@@ -237,6 +239,30 @@ export function App() {
       </div>
 
       <main className="mx-auto flex max-w-4xl flex-col gap-10 px-6 py-10">
+        <Section title="Brand" nav="Brand">
+          <div className="flex items-end gap-6">
+            <Logo size={48} />
+            <Logo size={32} />
+            <Logo size={24} />
+            <Logo size={16} />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex size-14 items-center justify-center rounded-lg bg-primary">
+              <Logo size={32} className="text-primary-foreground" />
+            </div>
+            <div className="flex size-14 items-center justify-center rounded-lg bg-foreground">
+              <Logo size={32} className="text-background" />
+            </div>
+            <div className="flex size-14 items-center justify-center rounded-lg border border-border">
+              <Logo size={32} />
+            </div>
+          </div>
+          <p className="w-full text-xs text-muted-foreground">
+            <code>Logo</code> uses <code>currentColor</code> (defaults to <code>text-primary</code>)
+            — shares the <code>--primary</code> token, override via <code>className</code>.
+          </p>
+        </Section>
+
         <Section title="Buttons">
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
