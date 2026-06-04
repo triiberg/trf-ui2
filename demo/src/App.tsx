@@ -9,6 +9,7 @@ import {
   AppShell, Badge, Button, cn, type ColumnDef, DataTable,
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider, SidebarTrigger, useSidebar,
+  Combobox,
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
   Checkbox, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
@@ -40,6 +41,30 @@ function SidebarBrand({ label = "TRF" }: { label?: string }) {
         {label}
       </span>
     </div>
+  );
+}
+
+/* ----------------------------------------------------- section: Combobox */
+
+const CUSTOMERS = [
+  "100 Meedia Brändi OÜ", "Triiberg AS", "Foam Labs", "Northwind OÜ",
+  "Põhjala Logistika AS", "Sinilill Kohvik OÜ", "Estkapital Invest AS", "Kalev & Pojad OÜ",
+].map((name) => ({ value: name, label: name }));
+
+function ComboboxDemo() {
+  const [customer, setCustomer] = useState("Triiberg AS");
+  return (
+    <Field label="Customer" htmlFor="customer" className="w-72">
+      <Combobox
+        id="customer"
+        options={CUSTOMERS}
+        value={customer}
+        onChange={setCustomer}
+        placeholder="Pick a customer…"
+        searchPlaceholder="Search customers…"
+        emptyText="No customer found."
+      />
+    </Field>
   );
 }
 
@@ -301,6 +326,7 @@ const GROUPS: GroupDef[] = [
           </Field>
         ),
       },
+      { id: "combobox", label: "Combobox", render: () => <ComboboxDemo /> },
       {
         id: "spinner", label: "Spinner", render: () => (
           <><Spinner size="sm" /><Spinner size="md" /><Spinner size="lg" /></>

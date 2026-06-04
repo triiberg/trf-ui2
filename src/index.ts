@@ -132,6 +132,21 @@ export {
 
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/tabs";
 
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor } from "./components/ui/popover";
+
+export {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+} from "./components/ui/command";
+
+export { Combobox } from "./components/combobox";
+export type { ComboboxProps, ComboboxOption } from "./components/combobox";
+
 export { Alert, AlertTitle, AlertDescription, alertVariants } from "./components/ui/alert";
 export type { AlertProps, AlertVariant } from "./components/ui/alert";
 

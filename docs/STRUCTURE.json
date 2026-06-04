@@ -49,7 +49,10 @@
     "Dialog": "(see src/components/ui/dialog.tsx \u2014 doc pending)",
     "Separator": "(see src/components/ui/separator.tsx \u2014 doc pending)",
     "Spinner": "(see src/components/ui/spinner.tsx \u2014 doc pending)",
-    "Tabs": "08-ui-components/tabs.md"
+    "Tabs": "08-ui-components/tabs.md",
+    "Combobox": "08-ui-components/combobox.md",
+    "Popover": "08-ui-components/combobox.md",
+    "Command": "08-ui-components/combobox.md"
   },
   "status": {
     "legend": {
@@ -70,6 +73,7 @@
     "08-ui-components/typography.md": "ready",
     "08-ui-components/sidebar.md": "ready",
     "08-ui-components/dropdown-menu.md": "ready",
-    "08-ui-components/tabs.md": "ready"
+    "08-ui-components/tabs.md": "ready",
+    "08-ui-components/combobox.md": "ready"
   }
 }
