@@ -7,9 +7,9 @@ export interface LogoProps extends React.SVGAttributes<SVGSVGElement> {
 }
 
 /**
- * TRF brand mark. Uses `currentColor`, defaulting to the brand (`text-primary`) so it shares the
- * `--primary` token with the rest of the system — override via `className` (e.g. `text-white`
- * on a colored header). Source brand orange: #FF9100.
+ * TRF brand mark. Uses `currentColor`, defaulting to `text-brand` (the fixed amber identity —
+ * separate from `--primary`, which is the theme-dependent action color). Override via `className`
+ * (e.g. `text-brand-foreground` on a brand fill). Source brand orange: #FF9100.
  */
 export function Logo({ size = 32, className, ...props }: LogoProps) {
   return (
@@ -21,7 +21,7 @@ export function Logo({ size = 32, className, ...props }: LogoProps) {
       fill="none"
       role="img"
       aria-label="TRF"
-      className={cn("text-primary", className)}
+      className={cn("text-brand", className)}
       {...props}
     >
       <path

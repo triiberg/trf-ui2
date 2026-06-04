@@ -33,9 +33,13 @@
     Menlo, Consolas, monospace;
 
   /*
-   * Identity (adapted from the v1 trf-ui theme): warm AMBER brand on cool blue-gray neutrals
-   * (hue ~240). The amber is light, so it carries DARK foreground text (v1's choice), not white.
+   * Identity: cool blue-gray neutrals (hue ~240).
+   * --brand  = fixed amber identity (the logo). Same in light & dark — never flips.
+   * --primary = the ACTION color (buttons/links/focus). Deep sea-blue in light, amber in dark.
    */
+  --brand: oklch(0.76 0.188 70);
+  --brand-foreground: oklch(0.24 0.04 70);
+
   --background: oklch(0.98 0.005 240);
   --foreground: oklch(0.22 0.02 240);
 
@@ -45,8 +49,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.22 0.02 240);
 
-  --primary: oklch(0.76 0.188 70);
-  --primary-foreground: oklch(0.24 0.04 70);
+  --primary: oklch(0.44 0.105 233);
+  --primary-foreground: oklch(0.98 0.005 240);
 
   --secondary: oklch(0.94 0.008 240);
   --secondary-foreground: oklch(0.3 0.02 240);
@@ -68,7 +72,7 @@
 
   --border: oklch(0.89 0.012 240);
   --input: oklch(0.89 0.012 240);
-  --ring: oklch(0.76 0.188 70);
+  --ring: oklch(0.44 0.105 233);
 }
 
 .dark {
@@ -143,6 +147,8 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);

@@ -35,6 +35,7 @@ See [08-ui-components/typography.md](08-ui-components/typography.md).
 
 | Group | Tokens |
 |---|---|
+| Brand | `brand`, `brand-foreground` |
 | Surface | `background`, `card`, `popover`, `muted`, `secondary`, `accent` |
 | Text-on-surface | `foreground`, `card-foreground`, `popover-foreground`, `muted-foreground`, `secondary-foreground`, `accent-foreground`, `primary-foreground` |
 | Interactive | `primary`, `border`, `input`, `ring` |
@@ -42,6 +43,17 @@ See [08-ui-components/typography.md](08-ui-components/typography.md).
 
 Use them as Tailwind utilities: `bg-primary`, `text-muted-foreground`, `border-input`,
 `bg-destructive`, `text-success-foreground`. Opacity is allowed (`bg-primary/90`).
+
+### Brand vs primary (important)
+
+These are **two different roles** — don't conflate them:
+
+- **`--brand`** = the fixed **identity** color (the amber logo). Same in light *and* dark — it
+  never flips. The `Logo` component defaults to `text-brand`.
+- **`--primary`** = the **action** color (buttons, links, focus ring, checked controls). It is
+  **theme-dependent**: deep **sea-blue in light** (white text), **amber in dark** (dark text).
+  Amber-as-primary fails on light backgrounds (low contrast, reads as a warning), so light uses
+  sea-blue while keeping the brand mark amber.
 
 ## Dark mode
 

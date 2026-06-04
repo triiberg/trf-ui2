@@ -90,10 +90,10 @@ verified. Mono + tabular-nums applied to table numbers. See `08-ui-components/ty
 
 ## ⚪ Also tracked (known-open from earlier)
 
-- **Visual identity / brand:** palette adapted from the v1 trf-ui theme — **warm amber brand**
-  (`oklch(0.76 0.188 70)`, dark text on it) on **cool blue-gray neutrals** (hue ~240), in
-  `src/styles/tokens.css`. Refine further when a Figma/brand source lands. *(v1 logo SVG available
-  in `~/Coding/trf-ui/src/assets/` for the AppShell phase.)*
+- **Visual identity / brand:** cool blue-gray neutrals (hue ~240). **`--brand`** = fixed amber
+  identity (logo); **`--primary`** = action color, **sea-blue in light / amber in dark** (see
+  `03-design-tokens.md` "Brand vs primary"). Logo component added (`text-brand`). Refine when a
+  Figma/brand source lands.
 - **Multi-tenant theming:** one TRF brand vs per-org / white-label theming — affects token
   architecture (one theme vs themeable-per-tenant).
 
