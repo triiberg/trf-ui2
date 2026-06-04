@@ -1,0 +1,70 @@
+# App shell & Sidebar
+
+> **Status: ready** · `import { AppShell, Sidebar, SidebarProvider, SidebarHeader, SidebarContent,
+> SidebarFooter, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarTrigger,
+> SidebarInset, useSidebar } from "@trf/ui2"` · source: `src/components/sidebar.tsx`
+
+A composable, **presentational** sidebar — no routing, auth, or data fetching inside. The app
+supplies the menu data, active state, and any header/footer widgets (org switcher, theme toggle,
+logout) as children/slots.
+
+## Anatomy
+
+```tsx
+<AppShell sidebar={
+  <Sidebar>
+    <SidebarHeader>{/* logo / org switcher */}</SidebarHeader>
+    <SidebarContent>                         {/* scrolls; header+footer stay put */}
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton groupId="sales" icon={<BadgeDollarSign />} tooltip="Sales">Sales</SidebarMenuButton>
+          <SidebarMenuSub groupId="sales">
+            <SidebarMenuItem><SidebarMenuButton href="/invoices" isActive>Invoices</SidebarMenuButton></SidebarMenuItem>
+          </SidebarMenuSub>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+          <SidebarMenuButton icon={<ScrollText />} href="/ledger" isActive>Ledger</SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarContent>
+    <SidebarFooter>{/* actions */} <SidebarTrigger /></SidebarFooter>
+  </Sidebar>
+}>
+  {/* page content */}
+</AppShell>
+```
+
+`AppShell` is a convenience (provider + flex + `SidebarInset`). For full control, use
+`SidebarProvider` + `Sidebar` + `SidebarInset` directly.
+
+## Key props
+
+- **`SidebarMenuButton`** — `icon` (Lucide), `isActive`, `href` (renders `<a>`), `tooltip`
+  (shown when collapsed), `groupId` (makes it an expandable group toggle with a chevron),
+  plus normal button props (`onClick`).
+- **`SidebarMenuSub`** — `groupId` ties it to its toggle; animates open/closed.
+- **`SidebarProvider` / `AppShell`** — `defaultCollapsed`, `defaultOpenGroups`.
+- **`useSidebar()`** — `{ collapsed, setCollapsed, toggleCollapsed, openGroups, toggleGroup,
+  mobileOpen, setMobileOpen }` for custom header/footer widgets (e.g. a fading wordmark).
+
+## The behavior (all CSS, no animation lib)
+
+- **Collapse to icon rail** (16rem → 3.5rem), persisted to `localStorage`.
+- **Staged**: collapsing closes the open groups first, *then* narrows; expanding widens first,
+  then restores the groups.
+- **Icons never move**: the icon sits at a fixed 20px left offset = `(56−16)/2`, so it's centered
+  in the collapsed rail and identical when expanded. Labels fade via `max-width`+`opacity`.
+- **Accordion** via the `grid-template-rows: 0fr→1fr` trick.
+- **Sticky** header & footer; only `SidebarContent` scrolls.
+- Clicking a collapsed item expands the rail first; `tooltip` shows the label while collapsed.
+
+## Rules
+
+- **Presentational only.** Don't put routing/fetch/auth in the sidebar — pass `href`/`onClick`
+  and `isActive` from the app; drop app widgets into the header/footer slots.
+- Icons are **Lucide** (doc 05). Every collapsible group needs a unique `groupId`.
+
+## Related
+
+- [05 Iconography](../05-iconography.md) · [07 Component Architecture](../07-component-architecture.md)
+- Mobile: `Sidebar` renders an overlay drawer when `useSidebar().mobileOpen` — wire a trigger via `setMobileOpen`.

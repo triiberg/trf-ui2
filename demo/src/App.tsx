@@ -1,13 +1,28 @@
 import { useEffect, useState } from "react";
-import { Moon, Sun, Search, Save, Trash2, Info, Inbox } from "lucide-react";
+import {
+  Moon, Sun, Search, Save, Trash2, Info, Inbox,
+  BadgeDollarSign, Receipt, ScrollText, Handshake, PieChart, Settings,
+} from "lucide-react";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
   Badge,
   Button,
+  cn,
   type ColumnDef,
   DataTable,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarProvider,
+  SidebarTrigger,
+  useSidebar,
   Card,
   CardContent,
   CardDescription,
@@ -173,6 +188,126 @@ function InvoiceTable() {
 const FONT_SCALE = { S: 0.9, M: 1, L: 1.15 } as const;
 type SizeBracket = keyof typeof FONT_SCALE;
 
+function SidebarBrand() {
+  const { collapsed } = useSidebar();
+  return (
+    <div className="flex w-full items-center gap-2 overflow-hidden px-4 py-3">
+      <Logo size={24} className="shrink-0" />
+      <span
+        className={cn(
+          "overflow-hidden whitespace-nowrap font-semibold transition-[max-width,opacity] duration-200",
+          collapsed ? "max-w-0 opacity-0" : "max-w-[10rem] opacity-100"
+        )}
+      >
+        TRF
+      </span>
+    </div>
+  );
+}
+
+function SidebarDemo() {
+  const [active, setActive] = useState("invoices");
+  const leaf = (id: string, label: string) => (
+    <SidebarMenuItem>
+      <SidebarMenuButton isActive={active === id} onClick={() => setActive(id)}>
+        {label}
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+
+  return (
+    <div className="h-[540px] w-full overflow-hidden rounded-lg border border-border">
+      <SidebarProvider defaultOpenGroups={["sales"]}>
+        <div className="flex h-full w-full">
+          <Sidebar>
+            <SidebarHeader>
+              <SidebarBrand />
+            </SidebarHeader>
+
+            <SidebarContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton groupId="sales" icon={<BadgeDollarSign />} tooltip="Sales">
+                    Sales
+                  </SidebarMenuButton>
+                  <SidebarMenuSub groupId="sales">
+                    {leaf("invoices", "Invoices")}
+                    {leaf("offers", "Offers")}
+                    {leaf("waybills", "Waybills")}
+                  </SidebarMenuSub>
+                </SidebarMenuItem>
+
+                <SidebarMenuItem>
+                  <SidebarMenuButton groupId="purchase" icon={<Receipt />} tooltip="Purchase">
+                    Purchase
+                  </SidebarMenuButton>
+                  <SidebarMenuSub groupId="purchase">
+                    {leaf("bills", "Bills")}
+                    {leaf("orders", "Orders")}
+                  </SidebarMenuSub>
+                </SidebarMenuItem>
+
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    icon={<ScrollText />}
+                    tooltip="Ledger"
+                    isActive={active === "ledger"}
+                    onClick={() => setActive("ledger")}
+                  >
+                    Ledger
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    icon={<Handshake />}
+                    tooltip="CRM"
+                    isActive={active === "crm"}
+                    onClick={() => setActive("crm")}
+                  >
+                    CRM
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    icon={<PieChart />}
+                    tooltip="Reports"
+                    isActive={active === "reports"}
+                    onClick={() => setActive("reports")}
+                  >
+                    Reports
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    icon={<Settings />}
+                    tooltip="Settings"
+                    isActive={active === "settings"}
+                    onClick={() => setActive("settings")}
+                  >
+                    Settings
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarContent>
+
+            <SidebarFooter>
+              <SidebarTrigger />
+            </SidebarFooter>
+          </Sidebar>
+
+          <main className="min-w-0 flex-1 overflow-y-auto p-6">
+            <H1 className="capitalize">{active}</H1>
+            <Text tone="muted" className="mt-1">
+              Collapse the rail (bottom-left). Watch: sub-items close first, then it narrows to
+              icons — which never move. Open a group to see the grid accordion.
+            </Text>
+          </main>
+        </div>
+      </SidebarProvider>
+    </div>
+  );
+}
+
 export function App() {
   const [dark, setDark] = useState(false);
   const [radius, setRadius] = useState(8);
@@ -261,6 +396,10 @@ export function App() {
             <code>Logo</code> defaults to <code>text-primary</code> — tracks the brand/action color
             per theme (ink in light, amber in dark). Override via <code>className</code>.
           </p>
+        </Section>
+
+        <Section title="App shell / Sidebar" nav="Sidebar">
+          <SidebarDemo />
         </Section>
 
         <Section title="Buttons">

@@ -9,6 +9,28 @@ export { cn } from "./lib/utils";
 export { Logo } from "./components/logo";
 export type { LogoProps } from "./components/logo";
 
+// --- App shell & sidebar ---
+export {
+  AppShell,
+  Sidebar,
+  SidebarProvider,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarTrigger,
+  SidebarInset,
+  useSidebar,
+} from "./components/sidebar";
+export type {
+  AppShellProps,
+  SidebarProviderProps,
+  SidebarMenuButtonProps,
+} from "./components/sidebar";
+
 // --- Typography ---
 export { H1, H2, H3, Text } from "./components/typography";
 export type { HeadingProps, TextProps } from "./components/typography";

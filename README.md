@@ -71,5 +71,7 @@ clsx + tailwind-merge (`cn()`) · Lucide icons · Geist + Geist Mono (self-hoste
 - **Layout + typography** ✅ — `Stack/Row/Grow/Page/PageHeader` and `H1/H2/H3/Text`. Tight,
   weight-driven type scale on a **one-knob `--font-scale`** (rem-based, browser-respecting,
   S/M/L-ready); mono + tabular-nums for table numbers.
-- **Next** — DropdownMenu, Tabs, Combobox, and the app shell (AppShell, SideMenu). See
-  `docs/STRUCTURE.json`.
+- **App shell** ✅ — composable `AppShell` + `Sidebar` parts: collapse-to-icon rail (staged
+  animation, pixel-fixed icons), grid accordion, sticky header/footer, localStorage persist.
+  Presentational (routing/auth/data stay in the app).
+- **Next** — DropdownMenu, Tabs, Combobox. See `docs/STRUCTURE.json`.
