@@ -198,3 +198,28 @@
     cursor: pointer;
   }
 }
+
+/*
+ * Native date/time inputs: the WebKit picker indicator sits right after the
+ * value by default (looks "floating in the middle"). Pin it to the right edge
+ * so the trigger aligns like our other inputs / the Combobox chevron.
+ * (margin-auto doesn't reliably move it; absolute positioning does.)
+ */
+@layer base {
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"] {
+    position: relative;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator,
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+  input[type="month"]::-webkit-calendar-picker-indicator,
+  input[type="week"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 0.75rem; /* = px-3, matches the Input horizontal padding */
+    cursor: pointer;
+  }
+}
