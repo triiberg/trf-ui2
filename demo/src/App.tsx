@@ -11,7 +11,7 @@ import {
   SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider, SidebarTrigger, useSidebar,
   Combobox, AsyncCombobox, Calendar, DatePicker, MonthPicker, type DateRange, RadioCard, TableCard,
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
-  Checkbox, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
+  Checkbox, ConfirmDialog, useConfirm, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
   EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState,
@@ -169,6 +169,75 @@ function AsyncComboboxDemo() {
       <Field label="CPA code (disabled)" htmlFor="cpa-disabled" className="w-72">
         {picker(true)}
       </Field>
+    </div>
+  );
+}
+
+/* ------------------------------------------------ section: ConfirmDialog */
+
+function ConfirmDialogDemo() {
+  const [delOpen, setDelOpen] = useState(false);
+  const [publishOpen, setPublishOpen] = useState(false);
+  const [last, setLast] = useState<string>();
+  const { confirm, dialog } = useConfirm();
+
+  const fakeAsync = () => new Promise<void>((r) => setTimeout(r, 1500));
+
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Declarative, destructive */}
+        <Button variant="destructive" onClick={() => setDelOpen(true)}>
+          <Trash2 /> Delete invoice
+        </Button>
+        <ConfirmDialog
+          open={delOpen}
+          variant="destructive"
+          title="Delete invoice #1042?"
+          description="The invoice will be permanently removed. This cannot be undone."
+          confirmLabel="Delete"
+          warning="Linked payments will be detached from this invoice."
+          onConfirm={() => {
+            setLast("Deleted #1042");
+            setDelOpen(false);
+          }}
+          onCancel={() => setDelOpen(false)}
+        />
+
+        {/* Declarative, non-destructive + async/busy */}
+        <Button variant="secondary" onClick={() => setPublishOpen(true)}>
+          Publish report…
+        </Button>
+        <ConfirmDialog
+          open={publishOpen}
+          title="Publish report?"
+          description="This sends the report to all subscribers. It may take a moment."
+          confirmLabel="Publish"
+          onConfirm={async () => {
+            await fakeAsync(); // spinner shows on the confirm button while pending
+            setLast("Report published");
+            setPublishOpen(false);
+          }}
+          onCancel={() => setPublishOpen(false)}
+        />
+
+        {/* Imperative hook */}
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            const ok = await confirm({
+              title: "Archive contract?",
+              description: "You can restore it later from the archive.",
+              confirmLabel: "Archive",
+            });
+            setLast(ok ? "Archived (via useConfirm)" : "Cancelled (via useConfirm)");
+          }}
+        >
+          Archive (useConfirm)
+        </Button>
+        {dialog}
+      </div>
+      {last ? <Text className="text-muted-foreground">Last action: {last}</Text> : null}
     </div>
   );
 }
@@ -632,6 +701,7 @@ const GROUPS: GroupDef[] = [
           </Card>
         ),
       },
+      { id: "confirm", label: "Confirm dialog", render: () => <ConfirmDialogDemo /> },
     ],
   },
   {

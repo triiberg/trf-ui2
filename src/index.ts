@@ -176,6 +176,9 @@ export type { MonthPickerProps } from "./components/month-picker";
 export { Alert, AlertTitle, AlertDescription, alertVariants } from "./components/ui/alert";
 export type { AlertProps, AlertVariant } from "./components/ui/alert";
 
+export { ConfirmDialog, useConfirm } from "./components/ui/confirm-dialog";
+export type { ConfirmDialogProps, ConfirmOptions } from "./components/ui/confirm-dialog";
+
 export { InfoGrid, InfoField } from "./components/info-grid";
 export type { InfoGridProps, InfoFieldProps } from "./components/info-grid";
 
