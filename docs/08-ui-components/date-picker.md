@@ -1,8 +1,9 @@
-# DatePicker (+ Calendar)
+# DatePicker (+ Calendar, MonthPicker)
 
-> **Status: ready** · `import { DatePicker, Calendar } from "@trf/ui2"` · source:
-> `src/components/date-picker.tsx` (built on `Popover` + `Calendar`) and
-> `src/components/ui/calendar.tsx` (`react-day-picker`, skinned with tokens)
+> **Status: ready** · `import { DatePicker, MonthPicker, Calendar } from "@trf/ui2"` · source:
+> `src/components/date-picker.tsx` (built on `Popover` + `Calendar`),
+> `src/components/month-picker.tsx`, and `src/components/ui/calendar.tsx`
+> (`react-day-picker`, skinned with tokens)
 
 A token-styled date picker — a `Button`-like trigger that opens a `Popover` with a month-grid
 `Calendar`. The **on-system replacement for the native `<input type="date">`** when you want a
@@ -66,6 +67,28 @@ don't click through months:
 
 `DateRange` is `{ from: Date | undefined; to?: Date | undefined }` (re-exported from
 `react-day-picker`).
+
+## MonthPicker (pick a whole month)
+
+When the unit is a **month**, not a day — invoice / accounting / report periods — use `MonthPicker`.
+It opens a 12-month grid with year navigation; a day would be meaningless. The value is a `Date` at
+the **1st of the selected month**, so it round-trips like `DatePicker`.
+
+```tsx
+import { MonthPicker, Field } from "@trf/ui2";
+
+const [period, setPeriod] = useState<Date>();
+<Field label="Accounting period" htmlFor="period">
+  <MonthPicker id="period" value={period} onChange={setPeriod} minYear={2015} maxYear={2035} />
+</Field>
+```
+
+Props: `value` (`Date` at 1st of month), `onChange`, `placeholder`, `formatMonth?` (defaults to a
+locale month + year, `June 2026`), `minYear?` / `maxYear?` (bound the year nav), `id`, `disabled`,
+`className`.
+
+> Don't confuse this with `DatePicker`'s `captionLayout="dropdown"` — that still selects a **day**
+> (the dropdowns are just faster navigation). `MonthPicker`'s value *is* the month.
 
 ## Calendar (the primitive)
 

@@ -9,7 +9,7 @@ import {
   AppShell, Badge, Button, cn, type ColumnDef, DataTable,
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider, SidebarTrigger, useSidebar,
-  Combobox, AsyncCombobox, Calendar, DatePicker, type DateRange, RadioCard, TableCard,
+  Combobox, AsyncCombobox, Calendar, DatePicker, MonthPicker, type DateRange, RadioCard, TableCard,
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
   Checkbox, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
@@ -179,6 +179,7 @@ function DatePickerDemo() {
   const [date, setDate] = useState<Date>();
   const [invoiceDate, setInvoiceDate] = useState<Date | undefined>(new Date(2026, 5, 9));
   const [range, setRange] = useState<DateRange>();
+  const [period, setPeriod] = useState<Date | undefined>(new Date(2026, 5, 1));
   return (
     <div className="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
       <Field label="Due date" htmlFor="dp-empty" description="Single date, nothing selected.">
@@ -192,6 +193,9 @@ function DatePickerDemo() {
       </Field>
       <Field label="Birth date" htmlFor="dp-dropdown" description="Month + year dropdowns for fast jumping.">
         <DatePicker id="dp-dropdown" value={invoiceDate} onChange={setInvoiceDate} captionLayout="dropdown" />
+      </Field>
+      <Field label="Accounting period" htmlFor="mp" description="MonthPicker — picks a whole month.">
+        <MonthPicker id="mp" value={period} onChange={setPeriod} minYear={2015} maxYear={2035} />
       </Field>
       <Field label="Disabled" htmlFor="dp-disabled">
         <DatePicker id="dp-disabled" value={invoiceDate} disabled />
