@@ -9,7 +9,7 @@ import {
   AppShell, Badge, Button, cn, type ColumnDef, DataTable,
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider, SidebarTrigger, useSidebar,
-  Combobox, AsyncCombobox, RadioCard, TableCard,
+  Combobox, AsyncCombobox, Calendar, DatePicker, type DateRange, RadioCard, TableCard,
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
   Checkbox, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
@@ -169,6 +169,39 @@ function AsyncComboboxDemo() {
       <Field label="CPA code (disabled)" htmlFor="cpa-disabled" className="w-72">
         {picker(true)}
       </Field>
+    </div>
+  );
+}
+
+/* --------------------------------------------------- section: DatePicker */
+
+function DatePickerDemo() {
+  const [date, setDate] = useState<Date>();
+  const [invoiceDate, setInvoiceDate] = useState<Date | undefined>(new Date(2026, 5, 9));
+  const [range, setRange] = useState<DateRange>();
+  return (
+    <div className="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
+      <Field label="Due date" htmlFor="dp-empty" description="Single date, nothing selected.">
+        <DatePicker id="dp-empty" value={date} onChange={setDate} placeholder="Pick a date…" />
+      </Field>
+      <Field label="Invoice date" htmlFor="dp-selected" description="Single date, preselected.">
+        <DatePicker id="dp-selected" value={invoiceDate} onChange={setInvoiceDate} />
+      </Field>
+      <Field label="Report period" htmlFor="dp-range" className="sm:col-span-2" description="Range mode (two months).">
+        <DatePicker mode="range" id="dp-range" value={range} onChange={setRange} placeholder="Pick a range…" />
+      </Field>
+      <Field label="Disabled" htmlFor="dp-disabled">
+        <DatePicker id="dp-disabled" value={invoiceDate} disabled />
+      </Field>
+      <div className="sm:col-span-2">
+        <Text className="mb-2 text-muted-foreground">Inline calendar (the primitive):</Text>
+        <Calendar
+          mode="single"
+          selected={invoiceDate}
+          onSelect={setInvoiceDate}
+          className="w-fit rounded-md border border-border"
+        />
+      </div>
     </div>
   );
 }
@@ -457,6 +490,7 @@ const GROUPS: GroupDef[] = [
       },
       { id: "combobox", label: "Combobox", render: () => <ComboboxDemo /> },
       { id: "async-combobox", label: "Async combobox", render: () => <AsyncComboboxDemo /> },
+      { id: "datepicker", label: "Date picker", render: () => <DatePickerDemo /> },
       {
         id: "spinner", label: "Spinner", render: () => (
           <><Spinner size="sm" /><Spinner size="md" /><Spinner size="lg" /></>

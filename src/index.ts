@@ -159,6 +159,17 @@ export type { ComboboxProps, ComboboxOption } from "./components/combobox";
 export { AsyncCombobox } from "./components/async-combobox";
 export type { AsyncComboboxProps } from "./components/async-combobox";
 
+export { Calendar } from "./components/ui/calendar";
+export type { CalendarProps } from "./components/ui/calendar";
+
+export { DatePicker } from "./components/date-picker";
+export type {
+  DatePickerProps,
+  SingleDatePickerProps,
+  RangeDatePickerProps,
+  DateRange,
+} from "./components/date-picker";
+
 export { Alert, AlertTitle, AlertDescription, alertVariants } from "./components/ui/alert";
 export type { AlertProps, AlertVariant } from "./components/ui/alert";
 
