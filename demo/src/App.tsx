@@ -190,13 +190,19 @@ function DatePickerDemo() {
       <Field label="Report period" htmlFor="dp-range" className="sm:col-span-2" description="Range mode (two months).">
         <DatePicker mode="range" id="dp-range" value={range} onChange={setRange} placeholder="Pick a range…" />
       </Field>
+      <Field label="Birth date" htmlFor="dp-dropdown" description="Month + year dropdowns for fast jumping.">
+        <DatePicker id="dp-dropdown" value={invoiceDate} onChange={setInvoiceDate} captionLayout="dropdown" />
+      </Field>
       <Field label="Disabled" htmlFor="dp-disabled">
         <DatePicker id="dp-disabled" value={invoiceDate} disabled />
       </Field>
       <div className="sm:col-span-2">
-        <Text className="mb-2 text-muted-foreground">Inline calendar (the primitive):</Text>
+        <Text className="mb-2 text-muted-foreground">Inline calendar (the primitive), dropdown nav:</Text>
         <Calendar
           mode="single"
+          captionLayout="dropdown"
+          startMonth={new Date(2015, 0)}
+          endMonth={new Date(2035, 11)}
           selected={invoiceDate}
           onSelect={setInvoiceDate}
           className="w-fit rounded-md border border-border"

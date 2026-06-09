@@ -45,7 +45,24 @@ const [period, setPeriod] = useState<DateRange>();
 | `onChange?` | `(date \| undefined)` / `(range \| undefined)` | Fires on select. Single mode closes the popover. |
 | `placeholder?` | `string` | Trigger text when empty. |
 | `formatDate?` | `(date: Date) => string` | Trigger label formatter. Defaults to a locale medium date (`09 Jun 2026`). |
+| `captionLayout?` | `"label"` \| `"dropdown"` \| `"dropdown-months"` \| `"dropdown-years"` | Header nav. Default `"label"` (month title + arrows). `"dropdown"` adds month **and** year dropdowns for fast jumping. |
+| `startMonth?` / `endMonth?` | `Date` | Bound the year dropdown. Default ±10 years around now when a dropdown layout is used. |
 | `id` / `disabled` / `className` | | Trigger mirrors the Combobox / Select trigger styling. |
+
+### Fast navigation (month + year dropdowns)
+
+For dates far from today (birth dates, historical periods), enable dropdown navigation so users
+don't click through months:
+
+```tsx
+<DatePicker
+  value={date}
+  onChange={setDate}
+  captionLayout="dropdown"
+  startMonth={new Date(1950, 0)}
+  endMonth={new Date(2035, 11)}
+/>
+```
 
 `DateRange` is `{ from: Date | undefined; to?: Date | undefined }` (re-exported from
 `react-day-picker`).

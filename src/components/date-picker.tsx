@@ -12,6 +12,16 @@ interface DatePickerBaseProps {
   placeholder?: string;
   /** Format a single date for the trigger label. Defaults to a locale medium date. */
   formatDate?: (date: Date) => string;
+  /**
+   * Calendar header navigation. `"label"` (default) shows the month title with prev/next arrows;
+   * `"dropdown"` shows month + year dropdowns for faster jumping (also `"dropdown-months"` /
+   * `"dropdown-years"`).
+   */
+  captionLayout?: "label" | "dropdown" | "dropdown-months" | "dropdown-years";
+  /** Earliest selectable/navigable month. Bounds the year dropdown. */
+  startMonth?: Date;
+  /** Latest selectable/navigable month. Bounds the year dropdown. */
+  endMonth?: Date;
   id?: string;
   disabled?: boolean;
   className?: string;
@@ -42,8 +52,25 @@ const defaultFormat = (date: Date) =>
  * matches the design system (light + dark). Supports single dates and start–end ranges.
  */
 export function DatePicker(props: DatePickerProps) {
-  const { placeholder = "Pick a date…", formatDate = defaultFormat, id, disabled, className } = props;
+  const {
+    placeholder = "Pick a date…",
+    formatDate = defaultFormat,
+    captionLayout = "label",
+    startMonth,
+    endMonth,
+    id,
+    disabled,
+    className,
+  } = props;
   const [open, setOpen] = React.useState(false);
+
+  // When a dropdown layout is requested without explicit bounds, default the year dropdown to a
+  // usable ±10-year window around now (otherwise the year list has nothing to range over).
+  const usesDropdown = captionLayout !== "label";
+  const now = new Date();
+  const resolvedStart = startMonth ?? (usesDropdown ? new Date(now.getFullYear() - 10, 0) : undefined);
+  const resolvedEnd = endMonth ?? (usesDropdown ? new Date(now.getFullYear() + 10, 11) : undefined);
+  const navProps = { captionLayout, startMonth: resolvedStart, endMonth: resolvedEnd } as const;
 
   let label: string | undefined;
   if (props.mode === "range") {
@@ -80,6 +107,7 @@ export function DatePicker(props: DatePickerProps) {
             autoFocus
             selected={props.value}
             onSelect={props.onChange}
+            {...navProps}
           />
         ) : (
           <Calendar
@@ -90,6 +118,7 @@ export function DatePicker(props: DatePickerProps) {
               props.onChange?.(date);
               setOpen(false);
             }}
+            {...navProps}
           />
         )}
       </PopoverContent>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 import { cn } from "../../lib/utils";
 import { buttonVariants } from "./button";
@@ -21,7 +21,12 @@ export function Calendar({ className, classNames, showOutsideDays = true, ...pro
         months: "relative flex flex-col gap-4 sm:flex-row",
         month: "flex w-full flex-col gap-4",
         month_caption: "relative flex h-9 items-center justify-center",
-        caption_label: "text-sm font-medium",
+        caption_label: "flex items-center gap-1 text-sm font-medium",
+        // Month/year dropdown navigation (captionLayout="dropdown").
+        dropdowns: "flex items-center justify-center gap-1.5 text-sm font-medium",
+        dropdown_root:
+          "relative inline-flex items-center rounded-md px-1.5 py-1 hover:bg-accent has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring",
+        dropdown: "absolute inset-0 z-10 cursor-pointer opacity-0",
         nav: "absolute inset-x-0 top-0 flex items-center justify-between",
         button_previous: cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
@@ -56,7 +61,14 @@ export function Calendar({ className, classNames, showOutsideDays = true, ...pro
       }}
       components={{
         Chevron: ({ orientation, className: chevronClassName, ...chevronProps }) => {
-          const Icon = orientation === "left" ? ChevronLeft : ChevronRight;
+          const Icon =
+            orientation === "left"
+              ? ChevronLeft
+              : orientation === "right"
+                ? ChevronRight
+                : orientation === "up"
+                  ? ChevronUp
+                  : ChevronDown;
           return <Icon className={cn("size-4", chevronClassName)} {...chevronProps} />;
         },
       }}
