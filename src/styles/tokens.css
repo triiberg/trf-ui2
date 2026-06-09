@@ -9,6 +9,12 @@
  */
 
 :root {
+  /* Tell the browser the UA color scheme so native form-control chrome adapts:
+   * the <input type="date"> calendar-picker icon, number spinners, scrollbars,
+   * and autofill all follow this. Without it they'd render light (black icons)
+   * even in dark mode. Overridden to `dark` in .dark below. */
+  color-scheme: light;
+
   /* Change this ONE value to reshape every corner radius in the system. */
   --radius: 0.5rem;
 
@@ -73,6 +79,10 @@
 }
 
 .dark {
+  /* Switch native form-control chrome to dark (date-picker icon, spinners,
+   * scrollbars, autofill). See the note in :root. */
+  color-scheme: dark;
+
   --background: oklch(0.22 0.018 240);
   --foreground: oklch(0.9 0.015 240);
 

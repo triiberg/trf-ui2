@@ -409,6 +409,9 @@ const GROUPS: GroupDef[] = [
             <Field label="Amount" htmlFor="amount" error="Must be a positive number.">
               <Input id="amount" type="number" defaultValue={-5} />
             </Field>
+            <Field label="Due date" htmlFor="due" description="Native date input — calendar icon follows the theme.">
+              <Input id="due" type="date" defaultValue="2026-06-09" />
+            </Field>
             <Field label="Comment" htmlFor="comment" className="sm:col-span-2">
               <Textarea id="comment" placeholder="Free-text notes…" />
             </Field>
