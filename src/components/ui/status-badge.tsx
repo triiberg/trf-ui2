@@ -10,7 +10,7 @@ const statusVariants = cva(
         neutral: "bg-muted text-muted-foreground [&>span]:bg-muted-foreground",
         info: "bg-primary/10 text-primary [&>span]:bg-primary",
         success: "bg-success/10 text-success [&>span]:bg-success",
-        warning: "bg-warning/15 text-warning-foreground [&>span]:bg-warning",
+        warning: "bg-warning/15 text-warning-foreground dark:text-warning [&>span]:bg-warning",
         error: "bg-destructive/10 text-destructive [&>span]:bg-destructive",
       },
     },
