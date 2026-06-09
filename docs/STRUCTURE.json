@@ -6,6 +6,12 @@
     "03-design-tokens.md",
     "07-component-architecture.md"
   ],
+  "readBeforeMigrating": [
+    "15-migration-infra.md",
+    "14-migration-guide.md",
+    "for-consuming-apps.md",
+    "13-ai-coding-guidelines.md"
+  ],
   "docs": {
     "README-START-HERE.md": "Entry point: status legend, reading order, task-based map.",
     "03-design-tokens.md": "Colors, radius, fonts, dark mode. The token contract. Use tokens, never raw values.",
@@ -14,6 +20,8 @@
     "13-ai-coding-guidelines.md": "Non-negotiable rules for any AI writing UI in or against this system.",
     "08-ui-components/": "One doc per component (props, variants, when to use). Load the specific component file.",
     "for-consuming-apps.md": "How one of the 14 TRF apps adopts trf-ui2, plus the AGENTS.md pointer snippet.",
+    "14-migration-guide.md": "v1→v2 component mapping table, AppShell migration pattern, per-app process, and common gotchas.",
+    "15-migration-infra.md": "Branch naming convention (feat/trf-ui2-adoption), test server strategy, tag pinning rules, migration order for all 13 remaining apps, and per-app checklist.",
     "open-questions.md": "Living parking lot: unresolved decisions and future plans (i18n, analytics, typography scale, theming). File questions here instead of guessing."
   },
   "components": {
@@ -51,6 +59,7 @@
     "Spinner": "08-ui-components/spinner.md",
     "Tabs": "08-ui-components/tabs.md",
     "Combobox": "08-ui-components/combobox.md",
+    "AsyncCombobox": "08-ui-components/async-combobox.md",
     "Popover": "08-ui-components/combobox.md",
     "Command": "08-ui-components/combobox.md",
     "InfoGrid": "08-ui-components/info-grid.md",
@@ -80,6 +89,7 @@
     "08-ui-components/dropdown-menu.md": "ready",
     "08-ui-components/tabs.md": "ready",
     "08-ui-components/combobox.md": "ready",
+    "08-ui-components/async-combobox.md": "ready",
     "08-ui-components/info-grid.md": "ready",
     "08-ui-components/status-badge.md": "ready",
     "08-ui-components/skeleton.md": "ready",
@@ -88,6 +98,8 @@
     "08-ui-components/inputs.md": "ready",
     "08-ui-components/dialog.md": "ready",
     "08-ui-components/separator.md": "ready",
-    "08-ui-components/spinner.md": "ready"
+    "08-ui-components/spinner.md": "ready",
+    "14-migration-guide.md": "ready",
+    "15-migration-infra.md": "ready"
   }
 }

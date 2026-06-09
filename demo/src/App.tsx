@@ -9,7 +9,7 @@ import {
   AppShell, Badge, Button, cn, type ColumnDef, DataTable,
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider, SidebarTrigger, useSidebar,
-  Combobox, RadioCard, TableCard,
+  Combobox, AsyncCombobox, RadioCard, TableCard,
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
   Checkbox, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
@@ -65,6 +65,111 @@ function ComboboxDemo() {
         emptyText="No customer found."
       />
     </Field>
+  );
+}
+
+/* ----------------------------------------------- section: AsyncCombobox */
+
+type Cpa = { id: string; code: string; description: string; level: number };
+
+const CPA_CODES: Cpa[] = [
+  { id: "01.11", code: "01.11", description: "Growing of cereals and oil seeds", level: 4 },
+  { id: "10.71", code: "10.71", description: "Manufacture of bread; fresh pastry", level: 4 },
+  { id: "26.20", code: "26.20", description: "Manufacture of computers", level: 4 },
+  { id: "41.00", code: "41.00", description: "Construction of buildings", level: 3 },
+  { id: "49.41", code: "49.41", description: "Freight transport by road", level: 4 },
+  { id: "62.01", code: "62.01", description: "Computer programming services", level: 4 },
+  { id: "62.02", code: "62.02", description: "Computer consultancy services", level: 4 },
+  { id: "70.22", code: "70.22", description: "Business & other management consultancy", level: 4 },
+];
+
+// Fake server: case-insensitive match on code or description, with latency.
+function searchCpaCodes(query: string): Promise<Cpa[]> {
+  const q = query.trim().toLowerCase();
+  return new Promise((resolve) =>
+    setTimeout(
+      () =>
+        resolve(
+          CPA_CODES.filter(
+            (c) => c.code.includes(q) || c.description.toLowerCase().includes(q)
+          )
+        ),
+      600
+    )
+  );
+}
+
+const MIN_CHARS = 2;
+
+function AsyncComboboxDemo() {
+  const [query, setQuery] = useState("");
+  const [items, setItems] = useState<Cpa[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [value, setValue] = useState<string>();
+  const [label, setLabel] = useState<string>();
+
+  useEffect(() => {
+    if (query.trim().length < MIN_CHARS) {
+      setItems([]);
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    searchCpaCodes(query).then((res) => {
+      if (cancelled) return;
+      setItems(res);
+      setLoading(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [query]);
+
+  const picker = (disabled?: boolean) => (
+    <AsyncCombobox<Cpa>
+      items={items}
+      getKey={(c) => c.id}
+      getLabel={(c) => `${c.code} — ${c.description}`}
+      renderItem={(c) => (
+        <>
+          <span className="shrink-0 font-mono text-primary">{c.code}</span>
+          <span className="flex-1 truncate">{c.description}</span>
+          <Badge variant="secondary" className="shrink-0">L{c.level}</Badge>
+        </>
+      )}
+      query={query}
+      onQueryChange={setQuery}
+      debounceMs={250}
+      loading={loading}
+      minChars={MIN_CHARS}
+      value={value}
+      selectedLabel={label}
+      onChange={(v, item) => {
+        setValue(v);
+        setLabel(item ? `${item.code} — ${item.description}` : undefined);
+      }}
+      placeholder="Pick a CPA code…"
+      searchPlaceholder="Search codes…"
+      emptyText="No codes found."
+      loadingText="Searching…"
+      disabled={disabled}
+    />
+  );
+
+  return (
+    <div className="flex w-full max-w-md flex-col gap-4">
+      <Field label="CPA code" htmlFor="cpa" className="w-72">
+        {picker()}
+      </Field>
+      <Text className="text-muted-foreground">
+        Idle, then type under {MIN_CHARS} chars (prompt), 2+ chars (loading → rich rows or empty),
+        and pick one (selected). Try “xyz” for the empty state.
+      </Text>
+      <Field label="CPA code (disabled)" htmlFor="cpa-disabled" className="w-72">
+        {picker(true)}
+      </Field>
+    </div>
   );
 }
 
@@ -348,6 +453,7 @@ const GROUPS: GroupDef[] = [
         ),
       },
       { id: "combobox", label: "Combobox", render: () => <ComboboxDemo /> },
+      { id: "async-combobox", label: "Async combobox", render: () => <AsyncComboboxDemo /> },
       {
         id: "spinner", label: "Spinner", render: () => (
           <><Spinner size="sm" /><Spinner size="md" /><Spinner size="lg" /></>

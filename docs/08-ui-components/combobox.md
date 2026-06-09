@@ -38,10 +38,11 @@ Props: `options` (`{ value, label }[]`), `value`, `onChange`, `placeholder`, `se
 
 ## Rules
 
-- Use `Combobox` for a searchable single select; use **`Select`** when the list is short and
-  needs no search. Wrap in a `Field` for label/error.
+- Use `Combobox` for a searchable single select over a **static, in-memory** list; use
+  **`Select`** when the list is short and needs no search. When options come from a server/async
+  search, use **[`AsyncCombobox`](async-combobox.md)** instead. Wrap in a `Field` for label/error.
 - Don't hand-roll autocomplete — these handle filtering, keyboard, and ARIA.
 
 ## Related
 
-- [Select](select.md) · [Field](../../src/components/ui/field.tsx) · [13 AI Coding Guidelines](../13-ai-coding-guidelines.md)
+- [AsyncCombobox](async-combobox.md) · [Select](select.md) · [Field](../../src/components/ui/field.tsx) · [13 AI Coding Guidelines](../13-ai-coding-guidelines.md)

@@ -156,6 +156,9 @@ export {
 export { Combobox } from "./components/combobox";
 export type { ComboboxProps, ComboboxOption } from "./components/combobox";
 
+export { AsyncCombobox } from "./components/async-combobox";
+export type { AsyncComboboxProps } from "./components/async-combobox";
+
 export { Alert, AlertTitle, AlertDescription, alertVariants } from "./components/ui/alert";
 export type { AlertProps, AlertVariant } from "./components/ui/alert";
 
