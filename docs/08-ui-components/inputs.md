@@ -29,6 +29,23 @@ Composes a `Label` + control + helper/error text. Wrap every form control in a `
 Props: `label`, `htmlFor`, `description`, `error` (replaces description, turns destructive),
 `required` (adds a marker). Works with `Input`, `Textarea`, `Select`, `Combobox`.
 
+## CopyField — read-only value + copy button
+
+A read-only value paired with a copy-to-clipboard button — for secrets, invite links, IDs. Owns
+its transient "copied" state (icon + label swap, auto-resets) and selects the text on focus.
+
+```tsx
+import { CopyField } from "@trf/ui2";
+
+<CopyField value={apiKey} onCopy={() => toast.success("Copied")} />
+<CopyField value="Invoice #1042" mono={false} />
+```
+
+Props: `value`, `mono` (default `true`), `size` (copy-button size, default `"sm"`), `copyLabel` /
+`copiedLabel`, and `onCopy(value)` / `onCopyError(err)`. The DS stays **toast-free** — fire your
+app's toast from `onCopy`. For a one-time secret in a dismissable banner, use
+[`SecretReveal`](feedback.md).
+
 ## Rules
 
 - Always pair the control's `id` with the `Field`'s `htmlFor` for accessibility.
@@ -36,4 +53,5 @@ Props: `label`, `htmlFor`, `description`, `error` (replaces description, turns d
 
 ## Related
 
-- [Select](select.md) · [Combobox](combobox.md) · [form-controls](form-controls.md)
+- [Select](select.md) · [Combobox](combobox.md) · [form-controls](form-controls.md) ·
+  [SecretReveal](feedback.md)

@@ -14,7 +14,7 @@ import {
   Checkbox, ConfirmDialog, useConfirm, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
-  EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState,
+  CopyField, EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState, SecretReveal,
   Logo, PageHeader, Row, Stack, Text, RadioGroup, RadioGroupItem, Select, SelectContent,
   SelectItem, SelectTrigger, SelectValue, Separator, Skeleton, Spinner, StatusBadge, Switch, Tabs, TabsContent, TabsList,
   TabsTrigger, Table, TableBody, TableCell,
@@ -587,6 +587,15 @@ const GROUPS: GroupDef[] = [
         ),
       },
       {
+        id: "copyfield", label: "Copy field", render: () => (
+          <div className="grid w-full max-w-2xl gap-3">
+            <CopyField value="trf_sk_3f9a2b7c8d1e4f5061728394a5b6c7d8" />
+            <CopyField value="https://trf.is/invite/9c1f4e2a-one-time-link" />
+            <CopyField value="Invoice #1042" mono={false} />
+          </div>
+        ),
+      },
+      {
         id: "choices", label: "Choice controls", render: () => (
           <>
             <label className="flex items-center gap-2 text-sm"><Checkbox defaultChecked /> Send a copy by email</label>
@@ -666,6 +675,17 @@ const GROUPS: GroupDef[] = [
           <div className="flex w-full max-w-xl flex-col gap-3">
             <Alert><Info /><div><AlertTitle>Heads up</AlertTitle><AlertDescription>This invoice has no line items yet.</AlertDescription></div></Alert>
             <Alert variant="destructive"><Trash2 /><div><AlertTitle>Could not save</AlertTitle><AlertDescription>The customer field is required.</AlertDescription></div></Alert>
+          </div>
+        ),
+      },
+      {
+        id: "secretreveal", label: "Secret reveal", render: () => (
+          <div className="w-full max-w-xl">
+            <SecretReveal
+              value="trf_sk_3f9a2b7c8d1e4f5061728394a5b6c7d8"
+              message="Copy your API key — it won't be shown again"
+              onDismiss={() => {}}
+            />
           </div>
         ),
       },
