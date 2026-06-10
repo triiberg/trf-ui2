@@ -35,6 +35,11 @@ const [period, setPeriod] = useState<DateRange>();
 <Field label="Report period" htmlFor="period">
   <DatePicker mode="range" id="period" value={period} onChange={setPeriod} />
 </Field>
+
+// Clearable (optional/filter date — ✕ in the trigger resets to undefined)
+<Field label="From" htmlFor="from">
+  <DatePicker id="from" value={from} onChange={setFrom} clearable />
+</Field>
 ```
 
 ### Props
@@ -50,6 +55,7 @@ const [period, setPeriod] = useState<DateRange>();
 | `startMonth?` / `endMonth?` | `Date` | Bound the year dropdown. Default ±10 years around now when a dropdown layout is used. |
 | `disabledDates?` | `Matcher \| Matcher[]` | react-day-picker matcher for non-selectable dates (greyed out). E.g. `{ after: new Date() }` to forbid future dates. Distinct from the boolean `disabled` (which disables the whole trigger). |
 | `keepDayOnNavigate?` | `boolean` | **Single mode, opt-in.** Carry the selected day to the new month when navigating, re-emitting it in one action (Jun 10 → pick April → Apr 10). See below. |
+| `clearable?` | `boolean` | **Opt-in.** Show a clear (✕) button in the trigger when a value is set; clicking it resets the field to empty (emits `undefined`). For optional/filter dates where unsetting is valid. |
 | `id` / `disabled` / `className` | | Trigger mirrors the Combobox / Select trigger styling. |
 
 ### Fast navigation (month + year dropdowns)

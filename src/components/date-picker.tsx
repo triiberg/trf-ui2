@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar as CalendarIcon, X } from "lucide-react";
 import { dateMatchModifiers } from "react-day-picker";
 import type { DateRange, Matcher } from "react-day-picker";
 import { cn } from "../lib/utils";
@@ -29,6 +29,11 @@ interface DatePickerBaseProps {
    * boolean `disabled` below, which disables the whole trigger.
    */
   disabledDates?: Matcher | Matcher[];
+  /**
+   * Show a clear (✕) button in the trigger when a value is set, to reset the field to empty
+   * (emits `undefined`). Opt-in — for optional/filter fields where unsetting the date is valid.
+   */
+  clearable?: boolean;
   id?: string;
   disabled?: boolean;
   className?: string;
@@ -75,6 +80,7 @@ export function DatePicker(props: DatePickerProps) {
     startMonth,
     endMonth,
     disabledDates,
+    clearable,
     id,
     disabled,
     className,
@@ -123,25 +129,51 @@ export function DatePicker(props: DatePickerProps) {
     };
   }
 
+  const hasValue = props.mode === "range" ? !!props.value?.from : !!props.value;
+  const showClear = !!clearable && hasValue && !disabled;
+  const clear = () => {
+    if (props.mode === "range") props.onChange?.(undefined);
+    else props.onChange?.(undefined);
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          id={id}
-          type="button"
-          disabled={disabled}
-          className={cn(
-            "flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs transition-colors",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            !label && "text-muted-foreground",
-            className
-          )}
-        >
-          <CalendarIcon className="size-4 shrink-0 opacity-50" />
-          <span className="truncate">{label ?? placeholder}</span>
-        </button>
-      </PopoverTrigger>
+      <div className="relative">
+        <PopoverTrigger asChild>
+          <button
+            id={id}
+            type="button"
+            disabled={disabled}
+            className={cn(
+              "flex h-9 w-full items-center gap-2 rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs transition-colors",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+              !label && "text-muted-foreground",
+              showClear && "pr-9",
+              className
+            )}
+          >
+            <CalendarIcon className="size-4 shrink-0 opacity-50" />
+            <span className="truncate">{label ?? placeholder}</span>
+          </button>
+        </PopoverTrigger>
+        {showClear ? (
+          <button
+            type="button"
+            aria-label="Clear date"
+            onClick={(e) => {
+              e.stopPropagation();
+              clear();
+            }}
+            className={cn(
+              "absolute right-2 top-1/2 -translate-y-1/2 rounded-sm text-muted-foreground opacity-70 transition-opacity hover:opacity-100",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-4"
+            )}
+          >
+            <X />
+          </button>
+        ) : null}
+      </div>
       <PopoverContent align="start" className="w-auto p-0">
         {props.mode === "range" ? (
           <Calendar
