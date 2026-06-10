@@ -72,7 +72,10 @@
     "StatusBadge": "08-ui-components/status-badge.md",
     "Skeleton": "08-ui-components/skeleton.md",
     "TableCard": "08-ui-components/cards.md",
-    "RadioCard": "08-ui-components/cards.md"
+    "RadioCard": "08-ui-components/cards.md",
+    "ChatMessage": "08-ui-components/chat.md",
+    "TypingIndicator": "08-ui-components/chat.md",
+    "ChatComposer": "08-ui-components/chat.md"
   },
   "status": {
     "legend": {
@@ -107,6 +110,7 @@
     "08-ui-components/confirm-dialog.md": "ready",
     "08-ui-components/separator.md": "ready",
     "08-ui-components/spinner.md": "ready",
+    "08-ui-components/chat.md": "ready",
     "14-migration-guide.md": "ready",
     "15-migration-infra.md": "ready"
   }

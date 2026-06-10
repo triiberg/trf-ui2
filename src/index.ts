@@ -192,6 +192,14 @@ export type { EmptyStateProps } from "./components/empty-state";
 export { LoadingState } from "./components/loading-state";
 export type { LoadingStateProps } from "./components/loading-state";
 
+// --- Chat / AI conversation ---
+export { ChatMessage, chatMessageVariants } from "./components/chat-message";
+export type { ChatMessageProps, ChatMessageRole } from "./components/chat-message";
+export { TypingIndicator } from "./components/typing-indicator";
+export type { TypingIndicatorProps } from "./components/typing-indicator";
+export { ChatComposer } from "./components/chat-composer";
+export type { ChatComposerProps } from "./components/chat-composer";
+
 export { Skeleton } from "./components/ui/skeleton";
 
 // --- Tables ---
