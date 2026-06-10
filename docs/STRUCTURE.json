@@ -64,6 +64,7 @@
     "AsyncCombobox": "08-ui-components/async-combobox.md",
     "DatePicker": "08-ui-components/date-picker.md",
     "MonthPicker": "08-ui-components/date-picker.md",
+    "DateTimePicker": "08-ui-components/date-picker.md",
     "Calendar": "08-ui-components/date-picker.md",
     "Popover": "08-ui-components/combobox.md",
     "Command": "08-ui-components/combobox.md",

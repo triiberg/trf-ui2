@@ -174,6 +174,9 @@ export type {
 export { MonthPicker } from "./components/month-picker";
 export type { MonthPickerProps } from "./components/month-picker";
 
+export { DateTimePicker } from "./components/date-time-picker";
+export type { DateTimePickerProps } from "./components/date-time-picker";
+
 export { Alert, AlertTitle, AlertDescription, alertVariants } from "./components/ui/alert";
 export type { AlertProps, AlertVariant } from "./components/ui/alert";
 

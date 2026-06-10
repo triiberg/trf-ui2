@@ -1,9 +1,9 @@
-# DatePicker (+ Calendar, MonthPicker)
+# DatePicker (+ Calendar, MonthPicker, DateTimePicker)
 
-> **Status: ready** · `import { DatePicker, MonthPicker, Calendar } from "@trf/ui2"` · source:
-> `src/components/date-picker.tsx` (built on `Popover` + `Calendar`),
-> `src/components/month-picker.tsx`, and `src/components/ui/calendar.tsx`
-> (`react-day-picker`, skinned with tokens)
+> **Status: ready** · `import { DatePicker, MonthPicker, DateTimePicker, Calendar } from "@trf/ui2"`
+> · source: `src/components/date-picker.tsx` (built on `Popover` + `Calendar`),
+> `src/components/month-picker.tsx`, `src/components/date-time-picker.tsx`, and
+> `src/components/ui/calendar.tsx` (`react-day-picker`, skinned with tokens)
 
 A token-styled date picker — a `Button`-like trigger that opens a `Popover` with a month-grid
 `Calendar`. The **on-system replacement for the native `<input type="date">`** when you want a
@@ -122,6 +122,29 @@ locale month + year, `June 2026`), `minYear?` / `maxYear?` (bound the year nav),
 
 > Don't confuse this with `DatePicker`'s `captionLayout="dropdown"` — that still selects a **day**
 > (the dropdowns are just faster navigation). `MonthPicker`'s value *is* the month.
+
+## DateTimePicker (pick a date **and** time)
+
+When the value needs a time-of-day — task due-at, an interaction timestamp, a scheduled event —
+use `DateTimePicker`. It's the on-system replacement for `<input type="datetime-local">`: the same
+trigger + a `Calendar` popover with a time field in the footer. The value is a single `Date`
+carrying both day and time, so it round-trips like `DatePicker`.
+
+```tsx
+import { DateTimePicker, Field } from "@trf/ui2";
+
+const [dueAt, setDueAt] = useState<Date>();
+<Field label="Due" htmlFor="due">
+  <DateTimePicker id="due" value={dueAt} onChange={setDueAt} minuteStep={15} />
+</Field>
+```
+
+Selecting a day keeps the current time (or seeds it from "now" on the first pick) and the popover
+stays open so the time can be set too; changing the time updates the same `Date`. Props: `value`,
+`onChange`, `placeholder`, `formatDateTime?` (defaults to a locale date + 24h time,
+`09 Jun 2026, 14:30`), `minuteStep?` (time field granularity, default 5), plus the same
+`captionLayout?` / `startMonth?` / `endMonth?` / `disabledDates?` navigation props as `DatePicker`,
+and `id` / `disabled` / `className`.
 
 ## Calendar (the primitive)
 
