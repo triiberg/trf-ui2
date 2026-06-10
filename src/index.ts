@@ -202,6 +202,13 @@ export type { ChatComposerProps } from "./components/chat-composer";
 
 export { Skeleton } from "./components/ui/skeleton";
 
+// --- Copy & secrets ---
+export { CopyField } from "./components/copy-field";
+export type { CopyFieldProps } from "./components/copy-field";
+
+export { SecretReveal } from "./components/secret-reveal";
+export type { SecretRevealProps } from "./components/secret-reveal";
+
 // --- Tables ---
 
 // Low-level primitives (dependency-free) — for simple/static tables.

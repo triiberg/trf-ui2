@@ -54,6 +54,8 @@
     "Input": "08-ui-components/inputs.md",
     "Textarea": "08-ui-components/inputs.md",
     "Field": "08-ui-components/inputs.md",
+    "CopyField": "08-ui-components/inputs.md",
+    "SecretReveal": "08-ui-components/feedback.md",
     "Card": "08-ui-components/cards.md",
     "Dialog": "08-ui-components/dialog.md",
     "ConfirmDialog": "08-ui-components/confirm-dialog.md",
