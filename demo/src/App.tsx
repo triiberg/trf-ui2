@@ -9,7 +9,7 @@ import {
   AppShell, Badge, Button, cn, type ColumnDef, DataTable,
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider, SidebarTrigger, useSidebar,
-  Combobox, AsyncCombobox, Calendar, DatePicker, MonthPicker, type DateRange, RadioCard, TableCard,
+  Combobox, AsyncCombobox, Calendar, DatePicker, DateTimePicker, MonthPicker, type DateRange, RadioCard, TableCard,
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
   Checkbox, ConfirmDialog, useConfirm, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
@@ -27,18 +27,24 @@ import {
 const FONT_SCALE = { S: 0.9, M: 1, L: 1.15 } as const;
 type SizeBracket = keyof typeof FONT_SCALE;
 
-function SidebarBrand({ label = "TRF" }: { label?: string }) {
+// Injected by Vite from the @trf/ui2 package version (tracks the cut tag).
+declare const __UI2_VERSION__: string;
+
+function SidebarBrand({ label = "TRF", version }: { label?: string; version?: string }) {
   const { collapsed } = useSidebar();
   return (
     <div className="flex w-full items-center gap-2 overflow-hidden px-4 py-3">
       <Logo size={24} className="shrink-0" />
       <span
         className={cn(
-          "overflow-hidden whitespace-nowrap font-semibold transition-[max-width,opacity] duration-200",
-          collapsed ? "max-w-0 opacity-0" : "max-w-[10rem] opacity-100"
+          "flex items-baseline gap-1.5 overflow-hidden whitespace-nowrap font-semibold transition-[max-width,opacity] duration-200",
+          collapsed ? "max-w-0 opacity-0" : "max-w-[12rem] opacity-100"
         )}
       >
         {label}
+        {version ? (
+          <span className="text-xs font-normal text-muted-foreground">v{version}</span>
+        ) : null}
       </span>
     </div>
   );
@@ -249,6 +255,12 @@ function DatePickerDemo() {
   const [invoiceDate, setInvoiceDate] = useState<Date | undefined>(new Date(2026, 5, 9));
   const [range, setRange] = useState<DateRange>();
   const [period, setPeriod] = useState<Date | undefined>(new Date(2026, 5, 1));
+  const [paid, setPaid] = useState<Date>();
+  const [fmtDate, setFmtDate] = useState<Date | undefined>(new Date(2026, 5, 9));
+  const [filterDate, setFilterDate] = useState<Date | undefined>(new Date(2026, 5, 9));
+  const [keepDay, setKeepDay] = useState<Date | undefined>(new Date(2026, 5, 10));
+  const [appt, setAppt] = useState<Date | undefined>(new Date(2026, 5, 9, 14, 30));
+  const [meeting, setMeeting] = useState<Date>();
   return (
     <div className="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
       <Field label="Due date" htmlFor="dp-empty" description="Single date, nothing selected.">
@@ -260,14 +272,58 @@ function DatePickerDemo() {
       <Field label="Report period" htmlFor="dp-range" className="sm:col-span-2" description="Range mode (two months).">
         <DatePicker mode="range" id="dp-range" value={range} onChange={setRange} placeholder="Pick a range…" />
       </Field>
-      <Field label="Birth date" htmlFor="dp-dropdown" description="Month + year dropdowns for fast jumping.">
+      <Field label="Birth date" htmlFor="dp-dropdown" description="captionLayout=dropdown — month + year jumping.">
         <DatePicker id="dp-dropdown" value={invoiceDate} onChange={setInvoiceDate} captionLayout="dropdown" />
+      </Field>
+      <Field label="Payment date" htmlFor="dp-nofuture" description="disabledDates: future dates greyed out.">
+        <DatePicker
+          id="dp-nofuture"
+          value={paid}
+          onChange={setPaid}
+          disabledDates={{ after: new Date() }}
+          placeholder="Pick a past date…"
+        />
+      </Field>
+      <Field label="Custom label" htmlFor="dp-fmt" description="formatDate: weekday + long date.">
+        <DatePicker
+          id="dp-fmt"
+          value={fmtDate}
+          onChange={setFmtDate}
+          formatDate={(d) =>
+            d.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "long", year: "numeric" })
+          }
+        />
+      </Field>
+      <Field label="Filter by date" htmlFor="dp-clear" description="clearable: ✕ resets to empty.">
+        <DatePicker id="dp-clear" value={filterDate} onChange={setFilterDate} clearable />
+      </Field>
+      <Field label="Keep day on navigate" htmlFor="dp-keep" description="keepDayOnNavigate + dropdown — jump months, keep the day.">
+        <DatePicker
+          id="dp-keep"
+          value={keepDay}
+          onChange={setKeepDay}
+          captionLayout="dropdown"
+          keepDayOnNavigate
+        />
       </Field>
       <Field label="Accounting period" htmlFor="mp" description="MonthPicker — picks a whole month.">
         <MonthPicker id="mp" value={period} onChange={setPeriod} minYear={2015} maxYear={2035} />
       </Field>
       <Field label="Disabled" htmlFor="dp-disabled">
         <DatePicker id="dp-disabled" value={invoiceDate} disabled />
+      </Field>
+      <Field label="Appointment" htmlFor="dt-appt" description="DateTimePicker — date + time, preselected.">
+        <DateTimePicker id="dt-appt" value={appt} onChange={setAppt} />
+      </Field>
+      <Field label="Meeting" htmlFor="dt-meeting" description="DateTimePicker — dropdown nav + 15-min steps.">
+        <DateTimePicker
+          id="dt-meeting"
+          value={meeting}
+          onChange={setMeeting}
+          captionLayout="dropdown"
+          minuteStep={15}
+          placeholder="Pick date & time…"
+        />
       </Field>
       <div className="sm:col-span-2">
         <Text className="mb-2 text-muted-foreground">Inline calendar (the primitive), dropdown nav:</Text>
@@ -569,7 +625,7 @@ const GROUPS: GroupDef[] = [
       },
       { id: "combobox", label: "Combobox", render: () => <ComboboxDemo /> },
       { id: "async-combobox", label: "Async combobox", render: () => <AsyncComboboxDemo /> },
-      { id: "datepicker", label: "Date picker", render: () => <DatePickerDemo /> },
+      { id: "datepicker", label: "Date & time pickers", render: () => <DatePickerDemo /> },
       {
         id: "spinner", label: "Spinner", render: () => (
           <><Spinner size="sm" /><Spinner size="md" /><Spinner size="lg" /></>
@@ -815,7 +871,7 @@ export function App() {
         defaultOpenGroups={GROUPS.map((g) => g.id)}
         sidebar={
           <Sidebar>
-            <SidebarHeader><SidebarBrand label="trf-ui2" /></SidebarHeader>
+            <SidebarHeader><SidebarBrand label="trf-ui2" version={__UI2_VERSION__} /></SidebarHeader>
             <SidebarContent>
               <SidebarMenu>
                 {GROUPS.map((g) => (
