@@ -49,6 +49,7 @@ const [period, setPeriod] = useState<DateRange>();
 | `captionLayout?` | `"label"` \| `"dropdown"` \| `"dropdown-months"` \| `"dropdown-years"` | Header nav. Default `"label"` (month title + arrows). `"dropdown"` adds month **and** year dropdowns for fast jumping. |
 | `startMonth?` / `endMonth?` | `Date` | Bound the year dropdown. Default ±10 years around now when a dropdown layout is used. |
 | `disabledDates?` | `Matcher \| Matcher[]` | react-day-picker matcher for non-selectable dates (greyed out). E.g. `{ after: new Date() }` to forbid future dates. Distinct from the boolean `disabled` (which disables the whole trigger). |
+| `keepDayOnNavigate?` | `boolean` | **Single mode, opt-in.** Carry the selected day to the new month when navigating, re-emitting it in one action (Jun 10 → pick April → Apr 10). See below. |
 | `id` / `disabled` / `className` | | Trigger mirrors the Combobox / Select trigger styling. |
 
 ### Fast navigation (month + year dropdowns)
@@ -65,6 +66,31 @@ don't click through months:
   endMonth={new Date(2035, 11)}
 />
 ```
+
+### Keep the day when switching month (`keepDayOnNavigate`)
+
+For fields where the **day stays put but the month moves** — an invoicing/period start date that the
+user re-bases to an earlier month — `keepDayOnNavigate` makes a month/year jump also move the
+selection. With a date already selected, navigating to another month re-emits the **same day** in
+that month, so it's a single action rather than "navigate, then click the day again". Pair it with
+`captionLayout="dropdown"` so the jump itself is one click:
+
+```tsx
+// Today is 10 Jun. User opens the month dropdown and picks April → value becomes 10 Apr instantly.
+<DatePicker
+  value={periodStart}
+  onChange={setPeriodStart}
+  captionLayout="dropdown"
+  keepDayOnNavigate
+/>
+```
+
+- **Single mode only** (a range has no single "day" to keep) and **opt-in** — existing dropdown
+  users are unaffected unless they set it.
+- The day is **clamped** for shorter months (Jan 31 → Feb → Feb 28/29).
+- If `disabledDates` excludes the target day, the auto-select is **skipped** — you still navigate,
+  but pick a valid day yourself.
+- With nothing selected yet, navigation behaves normally (pick a day to select).
 
 `DateRange` is `{ from: Date | undefined; to?: Date | undefined }` (re-exported from
 `react-day-picker`).

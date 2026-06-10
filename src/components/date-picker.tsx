@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Calendar as CalendarIcon } from "lucide-react";
+import { dateMatchModifiers } from "react-day-picker";
 import type { DateRange, Matcher } from "react-day-picker";
 import { cn } from "../lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
@@ -37,6 +38,15 @@ export interface SingleDatePickerProps extends DatePickerBaseProps {
   mode?: "single";
   value?: Date;
   onChange?: (date: Date | undefined) => void;
+  /**
+   * Keep the selected **day** when the user navigates to another month/year and re-emit it in the
+   * new month — e.g. with Jun 10 selected, jumping to April emits Apr 10 in a single action. Best
+   * paired with `captionLayout="dropdown"` so the month/year jump is one click. The day is clamped
+   * for shorter months (Jan 31 → Feb → Feb 28/29) and the auto-select is skipped when the target
+   * day is excluded by `disabledDates` (you navigate, but pick a valid day yourself). Opt-in;
+   * single mode only (meaningless for a range).
+   */
+  keepDayOnNavigate?: boolean;
 }
 
 export interface RangeDatePickerProps extends DatePickerBaseProps {
@@ -87,6 +97,32 @@ export function DatePicker(props: DatePickerProps) {
     label = formatDate(props.value);
   }
 
+  // keepDayOnNavigate (single mode): when the displayed month changes, carry the selected day into
+  // the new month and re-emit it, so jumping months/years also moves the selection in one action.
+  let handleMonthChange: ((displayedMonth: Date) => void) | undefined;
+  if (props.mode !== "range" && props.keepDayOnNavigate) {
+    const { value: selected, onChange } = props;
+    handleMonthChange = (displayedMonth: Date) => {
+      if (!selected) return;
+      const year = displayedMonth.getFullYear();
+      const month = displayedMonth.getMonth();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const day = Math.min(selected.getDate(), daysInMonth);
+      const next = new Date(
+        year,
+        month,
+        day,
+        selected.getHours(),
+        selected.getMinutes(),
+        selected.getSeconds(),
+        selected.getMilliseconds()
+      );
+      // Don't auto-select a day that disabledDates forbids — just navigate.
+      if (disabledDates && dateMatchModifiers(next, disabledDates)) return;
+      onChange?.(next);
+    };
+  }
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -126,6 +162,7 @@ export function DatePicker(props: DatePickerProps) {
               props.onChange?.(date);
               setOpen(false);
             }}
+            onMonthChange={handleMonthChange}
             disabled={disabledDates}
             {...navProps}
           />
