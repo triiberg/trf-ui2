@@ -53,6 +53,9 @@ export type { BadgeProps, BadgeVariant } from "./components/ui/badge";
 export { StatusBadge, statusVariants } from "./components/ui/status-badge";
 export type { StatusBadgeProps, StatusTone } from "./components/ui/status-badge";
 
+export { ActionPill, actionPillVariants } from "./components/ui/action-pill";
+export type { ActionPillProps, ActionPillVariant } from "./components/ui/action-pill";
+
 export { Input } from "./components/ui/input";
 export type { InputProps } from "./components/ui/input";
 
@@ -153,11 +156,17 @@ export {
   CommandSeparator,
 } from "./components/ui/command";
 
+export { SimpleSelect } from "./components/simple-select";
+export type { SimpleSelectProps, SimpleSelectOption } from "./components/simple-select";
+
 export { Combobox } from "./components/combobox";
 export type { ComboboxProps, ComboboxOption } from "./components/combobox";
 
 export { AsyncCombobox } from "./components/async-combobox";
 export type { AsyncComboboxProps } from "./components/async-combobox";
+
+export { EntityCombobox } from "./components/entity-combobox";
+export type { EntityComboboxProps, EntityComboboxItem } from "./components/entity-combobox";
 
 export { Calendar } from "./components/ui/calendar";
 export type { CalendarProps } from "./components/ui/calendar";
@@ -182,6 +191,9 @@ export type { AlertProps, AlertVariant } from "./components/ui/alert";
 
 export { ConfirmDialog, useConfirm } from "./components/ui/confirm-dialog";
 export type { ConfirmDialogProps, ConfirmOptions } from "./components/ui/confirm-dialog";
+
+export { StepCard } from "./components/step-card";
+export type { StepCardProps } from "./components/step-card";
 
 export { InfoGrid, InfoField } from "./components/info-grid";
 export type { InfoGridProps, InfoFieldProps } from "./components/info-grid";
@@ -222,6 +234,19 @@ export {
   TableCell,
   TableCaption,
 } from "./components/ui/table";
+
+// Financial statement renderer (balance sheet / income statement).
+export { StatementTable } from "./components/statement-table";
+export type { StatementTableProps, StatementRow } from "./components/statement-table";
+
+// Spreadsheet-style editable grid — inline cell editing, add/remove rows & columns.
+export { EditableGrid } from "./components/editable-grid";
+export type {
+  EditableGridProps,
+  EditableGridColumn,
+  EditableGridRow,
+  EditableGridDataType,
+} from "./components/editable-grid";
 
 // TanStack-powered DataTable — sort, filter, column reorder, inline edit.
 export { DataTable } from "./components/data-table";

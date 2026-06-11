@@ -1,22 +1,24 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Moon, Sun, Search, Save, Trash2, Info, Inbox,
   BadgeDollarSign, Receipt, ScrollText, Handshake, PieChart, Settings,
   Palette, Atom, Combine, Layers, MoreHorizontal, Copy, Pencil,
 } from "lucide-react";
 import {
-  Alert, AlertDescription, AlertTitle,
+  ActionPill, Alert, AlertDescription, AlertTitle,
   AppShell, Badge, Button, cn, type ColumnDef, DataTable,
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider, SidebarTrigger, useSidebar,
-  Combobox, AsyncCombobox, Calendar, DatePicker, DateTimePicker, MonthPicker, type DateRange, RadioCard, TableCard,
+  Combobox, AsyncCombobox, EntityCombobox, type EntityComboboxItem, Calendar, DatePicker, DateTimePicker, MonthPicker, type DateRange, RadioCard, TableCard,
+  StatementTable, type StatementRow,
+  EditableGrid, type EditableGridColumn, type EditableGridRow,
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
   Checkbox, ConfirmDialog, useConfirm, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
   CopyField, EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState, SecretReveal,
-  Logo, PageHeader, Row, Stack, Text, RadioGroup, RadioGroupItem, Select, SelectContent,
-  SelectItem, SelectTrigger, SelectValue, Separator, Skeleton, Spinner, StatusBadge, Switch, Tabs, TabsContent, TabsList,
+  Logo, PageHeader, Row, Stack, StepCard, Text, RadioGroup, RadioGroupItem, Select, SelectContent,
+  SelectItem, SelectTrigger, SelectValue, SimpleSelect, Separator, Skeleton, Spinner, StatusBadge, Switch, Tabs, TabsContent, TabsList,
   TabsTrigger, Table, TableBody, TableCell,
   TableFooter, TableHead, TableHeader, TableRow, Textarea, Tooltip, TooltipContent,
   TooltipProvider, TooltipTrigger,
@@ -175,6 +177,256 @@ function AsyncComboboxDemo() {
       <Field label="CPA code (disabled)" htmlFor="cpa-disabled" className="w-72">
         {picker(true)}
       </Field>
+    </div>
+  );
+}
+
+/* ---------------------------------------------- section: EntityCombobox */
+
+type DemoContact = { id: string; name: string; reg: string; email?: string };
+
+const CRM_CONTACTS: DemoContact[] = [
+  { id: "c1", name: "Triiberg AS", reg: "10000001", email: "info@triiberg.ee" },
+  { id: "c2", name: "Põhjala Logistika AS", reg: "10000002", email: "logistika@pohjala.ee" },
+  { id: "c3", name: "Sinilill Kohvik OÜ", reg: "10000003" },
+];
+
+const REGISTRY_ORGS: DemoContact[] = [
+  { id: "r1", name: "Saaremaa Vill OÜ", reg: "16543210", email: "Kuressaare, Saare maakond" },
+  { id: "r2", name: "Sakala Puit AS", reg: "12345678", email: "Viljandi, Viljandi maakond" },
+];
+
+function EntityComboboxDemo() {
+  const [query, setQuery] = useState("");
+  const [items, setItems] = useState<EntityComboboxItem[]>([]);
+  const [registry, setRegistry] = useState<EntityComboboxItem[]>([]);
+  const [registryLoading, setRegistryLoading] = useState(false);
+  const [picked, setPicked] = useState<string>();
+
+  const toItem = (c: DemoContact): EntityComboboxItem => ({
+    key: c.id, title: c.name, code: c.reg, description: c.email,
+  });
+
+  return (
+    <div className="flex w-full max-w-md flex-col gap-4">
+      <Field label="Customer" htmlFor="entity-customer" className="w-80">
+        <EntityCombobox
+          id="entity-customer"
+          query={query}
+          onQueryChange={(q) => {
+            setQuery(q);
+            setPicked(undefined);
+            if (!q.trim()) { setItems([]); setRegistry([]); }
+          }}
+          onSearch={(q) => {
+            // Fake CRM search; registry fallback kicks in on zero hits (try "saa").
+            const hits = CRM_CONTACTS.filter((c) =>
+              c.name.toLowerCase().includes(q.toLowerCase())
+            ).map(toItem);
+            setItems(hits);
+            if (hits.length === 0 && q.trim().length >= 2) {
+              setRegistryLoading(true);
+              setTimeout(() => {
+                setRegistry(
+                  REGISTRY_ORGS.filter((o) =>
+                    o.name.toLowerCase().includes(q.toLowerCase())
+                  ).map(toItem)
+                );
+                setRegistryLoading(false);
+              }, 600);
+            } else {
+              setRegistry([]);
+            }
+          }}
+          items={items}
+          onPick={(item) => { setQuery(item.title); setItems([]); setPicked(item.title); }}
+          fallbackItems={registry}
+          fallbackLabel="Business Registry"
+          fallbackLoading={registryLoading}
+          fallbackLoadingText="Searching business registry…"
+          onFallbackPick={(item) => {
+            setQuery(item.title); setRegistry([]); setPicked(`${item.title} (imported)`);
+          }}
+        />
+      </Field>
+      <Text className="text-muted-foreground">
+        Type “tri” for CRM hits (SELECT); “saa” for the registry fallback (IMPORT).
+        {picked ? ` Picked: ${picked}` : ""}
+      </Text>
+    </div>
+  );
+}
+
+/* ----------------------------------------------- section: SimpleSelect */
+
+function SimpleSelectDemo() {
+  const [projectType, setProjectType] = useState("");
+  return (
+    <Field
+      label={`Project type (SimpleSelect)${projectType === "" ? " — empty" : ""}`}
+      htmlFor="ptype"
+      className="w-64"
+    >
+      <SimpleSelect
+        id="ptype"
+        value={projectType}
+        onChange={setProjectType}
+        options={[
+          { value: "fixed", label: "Fixed price" },
+          { value: "hourly", label: "Hourly" },
+          { value: "retainer", label: "Retainer" },
+        ]}
+        placeholder="Pick a type…"
+        noneLabel="— None —"
+      />
+    </Field>
+  );
+}
+
+/* --------------------------------------------------- section: StepCard */
+
+function StepCardDemo() {
+  const [step, setStep] = useState(1);
+  return (
+    <Stack gap={3} className="w-full max-w-xl">
+      <StepCard
+        step={1}
+        title="Payment details"
+        subtitle="Date, amount and direction."
+        summary={step > 1 ? "2026-06-11 · €1,240.00 · outgoing" : undefined}
+        open={step === 1}
+        onOpen={() => setStep(1)}
+        completed={step > 1}
+      >
+        <Stack gap={3}>
+          <Text tone="muted">Step 1 form goes here…</Text>
+          <Button onClick={() => setStep(2)} className="self-start">Continue</Button>
+        </Stack>
+      </StepCard>
+      <StepCard
+        step={2}
+        title="Match invoices"
+        subtitle="Pick the open invoices this payment covers."
+        summary={step > 2 ? "2 invoices · fully allocated" : undefined}
+        open={step === 2}
+        onOpen={() => setStep(2)}
+        completed={step > 2}
+        disabled={step < 2}
+      >
+        <Stack gap={3}>
+          <Text tone="muted">Step 2 content…</Text>
+          <Button onClick={() => setStep(3)} className="self-start">Continue</Button>
+        </Stack>
+      </StepCard>
+      <StepCard
+        step={3}
+        title="Confirm"
+        open={step === 3}
+        onOpen={() => setStep(3)}
+        disabled={step < 3}
+      >
+        <Stack gap={3}>
+          <Text tone="muted">Review and confirm.</Text>
+          <Button onClick={() => setStep(1)} className="self-start">Restart demo</Button>
+        </Stack>
+      </StepCard>
+    </Stack>
+  );
+}
+
+/* ---------------------------------------------- section: StatementTable */
+
+const STATEMENT_ROWS: StatementRow[] = [
+  { type: "header", label: "ASSETS" },
+  { type: "header", label: "Current assets", indent: 1 },
+  { type: "line", label: "Cash and cash equivalents", indent: 2, values: [125000, 98000] },
+  { type: "line", label: "Receivables", indent: 2, values: [40250, 35900] },
+  { type: "line", label: "Inventory", indent: 2, values: [0, 12000] },
+  { type: "total", label: "Total current assets", indent: 1, values: [165250, 145900] },
+  { type: "header", label: "Fixed assets", indent: 1 },
+  { type: "line", label: "Property, plant and equipment", indent: 2, values: [89000, 95000] },
+  { type: "total", label: "Total fixed assets", indent: 1, values: [89000, 95000] },
+  { type: "total", label: "TOTAL ASSETS", values: [254250, 240900] },
+];
+
+function StatementTableDemo() {
+  return (
+    <div className="w-full max-w-2xl">
+      <StatementTable
+        rows={STATEMENT_ROWS}
+        labelHeader="Item"
+        valueHeaders={["31.12.2026", "31.12.2025"]}
+      />
+    </div>
+  );
+}
+
+/* --------------------------------------------------- section: ActionPill */
+
+function ActionPillDemo() {
+  const [unpaidOnly, setUnpaidOnly] = useState(false);
+  return (
+    <div className="flex w-full max-w-xl flex-col gap-4">
+      <div className="flex flex-wrap gap-2">
+        <ActionPill>Default</ActionPill>
+        <ActionPill variant="selected">Selected</ActionPill>
+        <ActionPill variant="primary">Primary</ActionPill>
+        <ActionPill variant="warning">Warning</ActionPill>
+        <ActionPill variant="destructive">Destructive</ActionPill>
+        <ActionPill disabled>Disabled</ActionPill>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <Text size="xs" tone="muted">Toggle:</Text>
+        <ActionPill
+          variant={unpaidOnly ? "selected" : "default"}
+          onClick={() => setUnpaidOnly((v) => !v)}
+        >
+          Unpaid only
+        </ActionPill>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------- section: EditableGrid */
+
+function EditableGridDemo() {
+  const [gridCols, setGridCols] = useState<EditableGridColumn[]>([
+    { id: "name", name: "Name", dataType: "string" },
+    { id: "qty", name: "Qty", dataType: "number" },
+    { id: "due", name: "Due", dataType: "date" },
+    { id: "done", name: "Done", dataType: "boolean" },
+  ]);
+  const [gridRows, setGridRows] = useState<EditableGridRow[]>([
+    { id: "1", values: { name: "Server rack", qty: "2", due: "2026-07-01", done: "true" } },
+    { id: "2", values: { name: "Patch cables", qty: "48", due: "2026-06-20", done: "false" } },
+    { id: "3", values: { name: "UPS battery", qty: "1", due: "", done: "" } },
+  ]);
+  const nextId = useRef(4);
+
+  return (
+    <div className="w-full">
+      <EditableGrid
+        columns={gridCols}
+        rows={gridRows}
+        onCellChange={(rowId, colId, value) =>
+          setGridRows((rs) =>
+            rs.map((r) => (r.id === rowId ? { ...r, values: { ...r.values, [colId]: value } } : r))
+          )
+        }
+        onRowAdd={(values) => {
+          setGridRows((rs) => [...rs, { id: String(nextId.current++), values }]);
+        }}
+        onRowDelete={(rowId) => setGridRows((rs) => rs.filter((r) => r.id !== rowId))}
+        onColumnAdd={(name, dataType) =>
+          setGridCols((cs) => [...cs, { id: `${name}-${Date.now()}`, name, dataType }])
+        }
+        onColumnDelete={(col) => setGridCols((cs) => cs.filter((c) => c.id !== col.id))}
+      />
+      <Text size="xs" tone="muted" className="mt-2 block">
+        Click a cell to edit (Enter commits, Esc cancels). Booleans toggle in the new-row select;
+        dates use an inline DatePicker. “+ Column” adds a typed column.
+      </Text>
     </div>
   );
 }
@@ -569,6 +821,9 @@ const GROUPS: GroupDef[] = [
         ),
       },
       {
+        id: "action-pills", label: "Action pills", render: () => <ActionPillDemo />,
+      },
+      {
         id: "inputs", label: "Inputs & Field", render: () => (
           <div className="grid w-full max-w-2xl gap-4 sm:grid-cols-2">
             <Field label="Email" htmlFor="email" description="We never share it." required>
@@ -609,16 +864,19 @@ const GROUPS: GroupDef[] = [
       },
       {
         id: "select", label: "Select", render: () => (
-          <Field label="Document type" htmlFor="doctype" className="w-64">
-            <Select defaultValue="invoice">
-              <SelectTrigger id="doctype"><SelectValue placeholder="Pick a type…" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="invoice">Invoice</SelectItem>
-                <SelectItem value="offer">Offer</SelectItem>
-                <SelectItem value="waybill">Waybill</SelectItem>
-              </SelectContent>
-            </Select>
-          </Field>
+          <div className="flex flex-wrap items-start gap-4">
+            <Field label="Document type" htmlFor="doctype" className="w-64">
+              <Select defaultValue="invoice">
+                <SelectTrigger id="doctype"><SelectValue placeholder="Pick a type…" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="invoice">Invoice</SelectItem>
+                  <SelectItem value="offer">Offer</SelectItem>
+                  <SelectItem value="waybill">Waybill</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+            <SimpleSelectDemo />
+          </div>
         ),
       },
       {
@@ -634,6 +892,7 @@ const GROUPS: GroupDef[] = [
       },
       { id: "combobox", label: "Combobox", render: () => <ComboboxDemo /> },
       { id: "async-combobox", label: "Async combobox", render: () => <AsyncComboboxDemo /> },
+      { id: "entity-combobox", label: "Entity combobox", render: () => <EntityComboboxDemo /> },
       { id: "datepicker", label: "Date & time pickers", render: () => <DatePickerDemo /> },
       {
         id: "spinner", label: "Spinner", render: () => (
@@ -732,6 +991,7 @@ const GROUPS: GroupDef[] = [
         ),
       },
       { id: "radiocard", label: "Radio card", render: () => <RadioCardDemo /> },
+      { id: "stepcard", label: "Step card", render: () => <StepCardDemo /> },
       {
         id: "tabs", label: "Tabs", render: () => (
           <Tabs defaultValue="overview" className="w-full max-w-md">
@@ -826,6 +1086,12 @@ const GROUPS: GroupDef[] = [
             </Table>
           </div>
         ),
+      },
+      {
+        id: "statement-table", label: "Statement table", render: () => <StatementTableDemo />,
+      },
+      {
+        id: "editable-grid", label: "Editable grid", render: () => <EditableGridDemo />,
       },
       {
         id: "tablecard", label: "Table card", render: () => (

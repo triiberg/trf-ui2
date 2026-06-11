@@ -32,3 +32,27 @@ popup) · `SelectItem` · optional `SelectGroup`, `SelectLabel`, `SelectSeparato
 ## Related
 
 - [13 AI Coding Guidelines](../13-ai-coding-guidelines.md)
+
+## SimpleSelect (flat options + empty value)
+
+> `import { SimpleSelect } from "@trf/ui2"` · source: `src/components/simple-select.tsx`
+
+Radix Select can't represent an empty-string value. For the common "native `<select>`" case —
+a flat options array where `""` means "nothing selected" — use `SimpleSelect`: it bridges the
+`"" <-> "__none__"` sentinel internally so app code never sees it.
+
+```tsx
+<Field label="Project type" htmlFor="ptype">
+  <SimpleSelect
+    id="ptype"
+    value={projectType}            // "" = nothing selected
+    onChange={setProjectType}      // receives "" when cleared
+    options={[{ value: "fixed", label: "Fixed price" }, { value: "hourly", label: "Hourly" }]}
+    placeholder="Pick a type…"
+    noneLabel="— None —"           // optional explicit clear item
+  />
+</Field>
+```
+
+Use the composable `Select` parts when you need groups, separators, or custom item content.
+Graduated from trffrontcrm's local `SimpleSelect` adapter.
