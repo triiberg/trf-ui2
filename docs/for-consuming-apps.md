@@ -7,7 +7,7 @@
 Always pin a **tag** — never `#main` (main moves). Use the latest release tag:
 
 ```bash
-npm i github:triiberg/trf-ui2#v0.6.0
+npm i github:triiberg/trf-ui2#v0.6.6
 # or, for local side-by-side dev:
 npm i file:../trf-ui2
 ```
