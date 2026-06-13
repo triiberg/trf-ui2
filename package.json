@@ -1,7 +1,7 @@
 {
   "name": "@trf/ui2",
   "private": true,
-  "version": "0.7.1",
+  "version": "0.8.0",
   "type": "module",
   "description": "TRF design system & component library (shadcn-style, Radix + Tailwind v4, owned source).",
   "scripts": {
@@ -40,6 +40,8 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "react-day-picker": "^10.0.1",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
     "tailwind-merge": "^3.0.1"
   },
   "peerDependencies": {

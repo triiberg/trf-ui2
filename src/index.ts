@@ -211,6 +211,8 @@ export { TypingIndicator } from "./components/typing-indicator";
 export type { TypingIndicatorProps } from "./components/typing-indicator";
 export { ChatComposer } from "./components/chat-composer";
 export type { ChatComposerProps } from "./components/chat-composer";
+export { Markdown } from "./components/markdown";
+export type { MarkdownProps } from "./components/markdown";
 
 export { Skeleton } from "./components/ui/skeleton";
 

@@ -16,7 +16,7 @@ import {
   Checkbox, ConfirmDialog, useConfirm, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
-  CopyField, EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState, SecretReveal,
+  CopyField, EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState, Markdown, SecretReveal,
   Logo, PageHeader, Row, Stack, StepCard, Text, RadioGroup, RadioGroupItem, Select, SelectContent,
   SelectItem, SelectTrigger, SelectValue, SimpleSelect, Separator, Skeleton, Spinner, StatusBadge, Switch, Tabs, TabsContent, TabsList,
   TabsTrigger, Table, TableBody, TableCell,
@@ -603,6 +603,80 @@ function RadioCardDemo() {
   );
 }
 
+/* ------------------------------------------------------- section: Markdown */
+
+// Exercises every element the Markdown component renders with a custom,
+// token-styled renderer, plus the GFM features remark-gfm enables
+// (tables, strikethrough, task lists, autolinks). Keep this in sync with the
+// renderers in src/components/markdown.tsx — it's the visual spec for them.
+const SAMPLE_MD = `# Quarterly summary
+
+Revenue is **up 12%** vs. last quarter, driven by the \`Northwind\` and
+[Triiberg AS](https://trf.is) accounts — and the figure is no longer
+~~provisional~~. Bare URLs autolink too: https://trf.is.
+
+## Headings render at four levels
+
+### Section heading (h3)
+
+#### Sub-section heading (h4)
+
+A plain paragraph with *italic*, **bold**, and \`inline code\` to show the
+base text styling and how inline marks inherit the bubble colour.
+
+## Lists
+
+Unordered:
+
+- Two invoices remain *overdue* — see the table below.
+- Net-30 terms are now the default for new customers.
+- Run \`trf invoices sync\` before closing the books.
+
+Ordered:
+
+1. Reconcile the bank feed.
+2. Match open invoices.
+3. Lock the period.
+
+Task list (GFM):
+
+- [x] Send reminders for overdue invoices
+- [ ] Archive Q2 statements
+- [ ] Export VAT report
+
+## Table
+
+| Customer        | Status   | Payable   |
+| --------------- | -------- | --------- |
+| Triiberg AS     | Paid     | €1,240.00 |
+| Northwind OÜ    | Overdue  | €890.00   |
+| Foam Labs       | Draft    | €0.00     |
+
+## Blockquote
+
+> Heads up: figures exclude VAT.
+
+---
+
+## Code block
+
+\`\`\`ts
+const total = invoices.reduce((sum, i) => sum + i.payable, 0);
+\`\`\`
+
+## Image
+
+![Cashflow trend for Q3](https://placehold.co/640x160/orange/white?text=Cashflow+Q3)
+`;
+
+function MarkdownDemo() {
+  return (
+    <div className="w-full max-w-xl rounded-lg border border-border bg-card p-4 text-card-foreground">
+      <Markdown>{SAMPLE_MD}</Markdown>
+    </div>
+  );
+}
+
 /* ------------------------------------------------------- section: Colors */
 
 const COLOR_TOKENS = [
@@ -990,6 +1064,7 @@ const GROUPS: GroupDef[] = [
           </div>
         ),
       },
+      { id: "markdown", label: "Markdown", render: () => <MarkdownDemo /> },
       { id: "radiocard", label: "Radio card", render: () => <RadioCardDemo /> },
       { id: "stepcard", label: "Step card", render: () => <StepCardDemo /> },
       {
