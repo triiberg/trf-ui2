@@ -159,7 +159,11 @@ export function Markdown({ children, className, components }: MarkdownProps) {
     [components]
   );
   return (
-    <div className={cn("text-sm leading-relaxed", className)}>
+    // `whitespace-normal` guards against a `white-space: pre-wrap` ancestor (e.g.
+    // a chat bubble): react-markdown leaves newline text nodes between blocks,
+    // and under pre-wrap each one renders as a stray blank line. The DOM
+    // structure carries the layout, never the source whitespace.
+    <div className={cn("whitespace-normal text-sm leading-relaxed", className)}>
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={merged}>
         {children}
       </ReactMarkdown>
