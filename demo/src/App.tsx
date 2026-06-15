@@ -5,7 +5,7 @@ import {
   Palette, Atom, Combine, Layers, MoreHorizontal, Copy, Pencil,
 } from "lucide-react";
 import {
-  ActionPill, Alert, AlertDescription, AlertTitle,
+  ActionPill, Alert, AlertDescription, AlertTitle, Avatar,
   AppShell, Badge, Button, cn, type ColumnDef, DataTable,
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarProvider, SidebarTrigger, useSidebar,
@@ -896,6 +896,24 @@ const GROUPS: GroupDef[] = [
       },
       {
         id: "action-pills", label: "Action pills", render: () => <ActionPillDemo />,
+      },
+      {
+        id: "avatar", label: "Avatar", render: () => (
+          <div className="flex flex-wrap items-center gap-4">
+            {["Kamarajura OÜ", "Triiberg AS", "Põhjala Logistika", "Sinilill Kohvik", "Foam Labs"].map((n) => (
+              <div key={n} className="flex items-center gap-2">
+                <Avatar name={n} colorKey={n} />
+                <Text size="sm">{n}</Text>
+              </div>
+            ))}
+            <div className="flex items-center gap-3">
+              <Avatar name="Acme" size={20} />
+              <Avatar name="Acme" size={28} />
+              <Avatar name="Acme" size={40} />
+              <Avatar name="Acme" size={56} />
+            </div>
+          </div>
+        ),
       },
       {
         id: "inputs", label: "Inputs & Field", render: () => (
