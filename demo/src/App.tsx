@@ -16,7 +16,7 @@ import {
   Checkbox, ConfirmDialog, useConfirm, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
-  CopyField, EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState, Markdown, SecretReveal,
+  CopyField, EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState, Markdown, SearchInput, SecretReveal,
   Logo, PageHeader, Row, Stack, StepCard, Text, RadioGroup, RadioGroupItem, Select, SelectContent,
   SelectItem, SelectTrigger, SelectValue, SimpleSelect, Separator, Skeleton, Spinner, StatusBadge, Switch, Tabs, TabsContent, TabsList,
   TabsTrigger, Table, TableBody, TableCell,
@@ -58,6 +58,21 @@ const CUSTOMERS = [
   "100 Meedia Brändi OÜ", "Triiberg AS", "Foam Labs", "Northwind OÜ",
   "Põhjala Logistika AS", "Sinilill Kohvik OÜ", "Estkapital Invest AS", "Kalev & Pojad OÜ",
 ].map((name) => ({ value: name, label: name }));
+
+function SearchInputDemo() {
+  const [q, setQ] = useState("invoice");
+  return (
+    <Field label="Search" htmlFor="search" description="Leading icon + clear button; forwards all Input props." className="sm:col-span-2">
+      <SearchInput
+        id="search"
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        onClear={() => setQ("")}
+        placeholder="Search…"
+      />
+    </Field>
+  );
+}
 
 function ComboboxDemo() {
   const [customer, setCustomer] = useState("Triiberg AS");
@@ -930,6 +945,7 @@ const GROUPS: GroupDef[] = [
             <Field label="Comment" htmlFor="comment" className="sm:col-span-2">
               <Textarea id="comment" placeholder="Free-text notes…" />
             </Field>
+            <SearchInputDemo />
           </div>
         ),
       },

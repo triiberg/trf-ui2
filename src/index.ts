@@ -59,6 +59,8 @@ export type { ActionPillProps, ActionPillVariant } from "./components/ui/action-
 
 export { Input } from "./components/ui/input";
 export type { InputProps } from "./components/ui/input";
+export { SearchInput } from "./components/ui/search-input";
+export type { SearchInputProps } from "./components/ui/search-input";
 
 export { Textarea } from "./components/ui/textarea";
 export type { TextareaProps } from "./components/ui/textarea";
