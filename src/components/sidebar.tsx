@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronRight, PanelLeftClose, PanelLeftOpen, Menu, X } from "lucide-react";
+import { ChevronRight, PanelLeftClose, PanelLeftOpen, Menu } from "lucide-react";
 import { cn } from "../lib/utils";
 
 /*
@@ -141,7 +141,7 @@ export function Sidebar({
   children: React.ReactNode;
 }) {
   const ctx = useSidebar();
-  const { collapsed, mobileOpen, setMobileOpen } = ctx;
+  const { collapsed, mobileOpen } = ctx;
   return (
     <>
       {/* Desktop rail */}
@@ -160,24 +160,27 @@ export function Sidebar({
       {/* Mobile menu: a full-screen, touch-first panel (not a mini desktop rail).
           Forces an expanded context so labels always show; respects safe-area insets.
           The mobile-specific sizing lives in the `max-md:` utilities on the rows. */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 flex md:hidden">
-          <aside className="relative flex h-full w-full flex-col overflow-hidden bg-card text-card-foreground pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
-            {/* Close sits on the brand row (top-right), not a separate row. */}
-            <button
-              type="button"
-              onClick={() => setMobileOpen(false)}
-              aria-label="Close menu"
-              className="absolute right-2 top-[calc(env(safe-area-inset-top)+0.5rem)] z-10 flex size-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground [&_svg]:size-6"
-            >
-              <X />
-            </button>
-            <SidebarContext.Provider value={{ ...ctx, collapsed: false }}>
-              {children}
-            </SidebarContext.Provider>
-          </aside>
-        </div>
-      )}
+      {/* Animated full-screen mobile menu (always mounted so it can transition). */}
+      <div
+        aria-hidden={!mobileOpen}
+        className={cn(
+          "fixed inset-0 z-50 flex md:hidden transition-[opacity,visibility] duration-200 ease-out",
+          mobileOpen ? "visible opacity-100" : "invisible opacity-0 pointer-events-none"
+        )}
+      >
+        <aside
+          className={cn(
+            "flex h-full w-full flex-col overflow-hidden bg-card text-card-foreground pb-[env(safe-area-inset-bottom)] transition-transform duration-200 ease-out",
+            mobileOpen ? "translate-y-0" : "-translate-y-3"
+          )}
+        >
+          {/* The header bar (with its own ☰/✕ toggle) is part of `children`, so it
+              aligns exactly with the closed-state bar. */}
+          <SidebarContext.Provider value={{ ...ctx, collapsed: false }}>
+            {children}
+          </SidebarContext.Provider>
+        </aside>
+      </div>
     </>
   );
 }
