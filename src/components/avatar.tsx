@@ -1,3 +1,4 @@
+import { type CSSProperties } from "react";
 import { cn } from "../lib/utils";
 
 /*
@@ -30,19 +31,24 @@ function hueFor(key: string): number {
 export function Avatar({ name, colorKey, size = 28, className }: AvatarProps) {
   const initial = (name?.trim()?.[0] ?? "?").toUpperCase();
   const hue = hueFor((colorKey ?? name ?? "").toLowerCase());
+  // Border contrasts with the page: darker than the fill in light mode, lighter in
+  // dark mode (so the circle stays defined on a dark background).
+  const style = {
+    width: size,
+    height: size,
+    fontSize: Math.round(size * 0.44),
+    backgroundColor: `hsl(${hue} 52% 46%)`,
+    color: "#fff",
+    "--avatar-border": `hsl(${hue} 52% 32%)`,
+    "--avatar-border-dark": `hsl(${hue} 60% 68%)`,
+  } as CSSProperties;
   return (
     <span
       aria-hidden
-      style={{
-        width: size,
-        height: size,
-        fontSize: Math.round(size * 0.44),
-        backgroundColor: `hsl(${hue} 52% 46%)`,
-        borderColor: `hsl(${hue} 52% 34%)`,
-        color: "#fff",
-      }}
+      style={style}
       className={cn(
         "inline-flex shrink-0 select-none items-center justify-center rounded-full border font-semibold leading-none",
+        "border-[color:var(--avatar-border)] dark:border-[color:var(--avatar-border-dark)]",
         className
       )}
     >
