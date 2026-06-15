@@ -215,6 +215,9 @@ export type { ChatComposerProps } from "./components/chat-composer";
 export { Markdown } from "./components/markdown";
 export type { MarkdownProps } from "./components/markdown";
 
+export { Avatar } from "./components/avatar";
+export type { AvatarProps } from "./components/avatar";
+
 export { Skeleton } from "./components/ui/skeleton";
 
 // --- Copy & secrets ---
