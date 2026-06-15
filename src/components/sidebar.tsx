@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronRight, PanelLeftClose, PanelLeftOpen, Menu } from "lucide-react";
+import { ChevronRight, PanelLeftClose, PanelLeftOpen, Menu, X } from "lucide-react";
 import { cn } from "../lib/utils";
 
 /*
@@ -157,17 +157,23 @@ export function Sidebar({
         {children}
       </aside>
 
-      {/* Mobile drawer. Forces an expanded context so labels show regardless of the
-          persisted desktop collapse; respects the device safe-area insets. */}
+      {/* Mobile menu: a full-screen, touch-first panel (not a mini desktop rail).
+          Forces an expanded context so labels always show; respects safe-area insets.
+          The mobile-specific sizing lives in the `max-md:` utilities on the rows. */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 md:hidden" onClick={() => setMobileOpen(false)}>
-          <div className="absolute inset-0 bg-black/50" />
-          <aside
-            onClick={(e) => e.stopPropagation()}
-            style={{ width: SIDEBAR_WIDTH }}
-            className="absolute left-0 top-0 flex h-full max-w-[85vw] flex-col overflow-hidden border-r border-border bg-card text-card-foreground pb-[env(safe-area-inset-bottom)]"
-          >
+        <div className="fixed inset-0 z-50 flex md:hidden">
+          <aside className="flex h-full w-full flex-col overflow-hidden bg-card text-card-foreground pb-[env(safe-area-inset-bottom)]">
             <SidebarContext.Provider value={{ ...ctx, collapsed: false }}>
+              <div className="flex shrink-0 justify-end px-2 pt-[max(0.5rem,env(safe-area-inset-top))]">
+                <button
+                  type="button"
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="Close menu"
+                  className="flex size-10 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground [&_svg]:size-6"
+                >
+                  <X />
+                </button>
+              </div>
               {children}
             </SidebarContext.Provider>
           </aside>
@@ -305,10 +311,13 @@ export function SidebarMenuButton({
   // so the icon never moves. Keep these in sync if SidebarMenu's px-* changes.
   const classes = cn(
     "flex w-full items-center rounded-md py-1.5 pl-3 pr-3 text-left text-sm transition-colors",
+    // Mobile-first: larger rows + font for touch (the rail is hidden below md, so
+    // these only affect the full-screen mobile menu).
+    "max-md:gap-1 max-md:py-3 max-md:text-base",
     isActive
       ? "bg-primary/10 font-medium text-primary"
       : "text-foreground hover:bg-accent hover:text-accent-foreground",
-    "[&_svg]:size-4 [&_svg]:shrink-0",
+    "[&_svg]:size-4 [&_svg]:shrink-0 max-md:[&_svg]:size-5",
     className
   );
 
@@ -396,6 +405,8 @@ export function SidebarTrigger({ className, ...props }: React.ButtonHTMLAttribut
       onClick={toggleCollapsed}
       className={cn(
         "flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground [&_svg]:size-4",
+        // Collapsing the rail is a desktop-only affordance — hide it in the mobile menu.
+        "max-md:hidden",
         collapsed ? "mx-auto" : "ml-auto",
         className
       )}
