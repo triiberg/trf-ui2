@@ -22,6 +22,7 @@ export {
   SidebarMenuButton,
   SidebarMenuSub,
   SidebarTrigger,
+  SidebarMobileTrigger,
   SidebarInset,
   useSidebar,
 } from "./components/sidebar";

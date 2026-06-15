@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronRight, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { ChevronRight, PanelLeftClose, PanelLeftOpen, Menu } from "lucide-react";
 import { cn } from "../lib/utils";
 
 /*
@@ -140,7 +140,8 @@ export function Sidebar({
   className?: string;
   children: React.ReactNode;
 }) {
-  const { collapsed, mobileOpen, setMobileOpen } = useSidebar();
+  const ctx = useSidebar();
+  const { collapsed, mobileOpen, setMobileOpen } = ctx;
   return (
     <>
       {/* Desktop rail */}
@@ -156,20 +157,42 @@ export function Sidebar({
         {children}
       </aside>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer. Forces an expanded context so labels show regardless of the
+          persisted desktop collapse; respects the device safe-area insets. */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 md:hidden" onClick={() => setMobileOpen(false)}>
           <div className="absolute inset-0 bg-black/50" />
           <aside
             onClick={(e) => e.stopPropagation()}
             style={{ width: SIDEBAR_WIDTH }}
-            className="absolute left-0 top-0 flex h-full flex-col overflow-hidden border-r border-border bg-card text-card-foreground"
+            className="absolute left-0 top-0 flex h-full max-w-[85vw] flex-col overflow-hidden border-r border-border bg-card text-card-foreground pb-[env(safe-area-inset-bottom)]"
           >
-            {children}
+            <SidebarContext.Provider value={{ ...ctx, collapsed: false }}>
+              {children}
+            </SidebarContext.Provider>
           </aside>
         </div>
       )}
     </>
+  );
+}
+
+/** Hamburger that opens the mobile drawer. Render in a mobile top bar (`md:hidden`). */
+export function SidebarMobileTrigger({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  const { setMobileOpen } = useSidebar();
+  return (
+    <button
+      type="button"
+      aria-label="Open menu"
+      onClick={() => setMobileOpen(true)}
+      className={cn(
+        "flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground [&_svg]:size-5",
+        className
+      )}
+      {...props}
+    >
+      <Menu />
+    </button>
   );
 }
 
@@ -261,7 +284,7 @@ export function SidebarMenuButton({
   onClick,
   ...props
 }: SidebarMenuButtonProps) {
-  const { collapsed, setCollapsed, openGroups, toggleGroup } = useSidebar();
+  const { collapsed, setCollapsed, openGroups, toggleGroup, setMobileOpen } = useSidebar();
   const isOpen = groupId ? openGroups.has(groupId) : false;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement & HTMLAnchorElement>) => {
@@ -272,6 +295,8 @@ export function SidebarMenuButton({
     } else if (groupId) {
       toggleGroup(groupId);
     }
+    // A leaf row navigates — close the mobile drawer (no-op on desktop).
+    if (!groupId) setMobileOpen(false);
     onClick?.(e as React.MouseEvent<HTMLButtonElement>);
   };
 

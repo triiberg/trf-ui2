@@ -1,7 +1,7 @@
 {
   "name": "@trf/ui2",
   "private": true,
-  "version": "0.8.1",
+  "version": "0.9.0",
   "type": "module",
   "description": "TRF design system & component library (shadcn-style, Radix + Tailwind v4, owned source).",
   "scripts": {
