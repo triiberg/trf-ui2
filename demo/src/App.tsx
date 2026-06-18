@@ -1229,6 +1229,32 @@ const GROUPS: GroupDef[] = [
 
 /* ------------------------------------------------------------------ app */
 
+const THEME_OPTIONS = [
+  { value: "trivis", label: "Trivis" },
+  { value: "neutral", label: "Neutral" },
+  { value: "amber", label: "Amber" },
+  { value: "coffee", label: "Coffee" },
+  { value: "claude", label: "Claude" },
+  { value: "tangerine", label: "Tangerine" },
+  { value: "sky", label: "Sky" },
+  { value: "mars", label: "Mars" },
+  { value: "disco", label: "Disco" },
+  { value: "modern", label: "Modern" },
+];
+
+/* Four representative swatches for a theme. The wrapper carries the theme's class (+ dark)
+ * so `bg-primary` etc. resolve to THAT theme's tokens in the current mode — letting the
+ * dropdown preview every theme at once. "trivis" is the base (no class). */
+function ThemeSwatches({ theme, dark }: { theme: string; dark: boolean }) {
+  return (
+    <span className={cn("flex shrink-0 items-center gap-0.5", theme !== "trivis" && `theme-${theme}`, dark && "dark")}>
+      {["bg-primary", "bg-secondary", "bg-accent", "bg-muted"].map((c) => (
+        <span key={c} className={cn("size-3 rounded-full ring-1 ring-black/10 dark:ring-white/20", c)} />
+      ))}
+    </span>
+  );
+}
+
 function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }) {
   const { collapsed } = useSidebar();
   return (
@@ -1247,11 +1273,18 @@ function ThemeToggle({ dark, onToggle }: { dark: boolean; onToggle: () => void }
 
 export function App() {
   const [dark, setDark] = useState(false);
+  // "trivis" = the default brand theme (base :root/.dark, no class). Other values add a theme-* class.
+  const [theme, setTheme] = useState("trivis");
   const [radius, setRadius] = useState(8);
   const [textSize, setTextSize] = useState<SizeBracket>("M");
   const [active, setActive] = useState("buttons");
 
   useEffect(() => { document.documentElement.classList.toggle("dark", dark); }, [dark]);
+  useEffect(() => {
+    const el = document.documentElement;
+    [...el.classList].filter((c) => c.startsWith("theme-")).forEach((c) => el.classList.remove(c));
+    if (theme && theme !== "trivis") el.classList.add(`theme-${theme}`);
+  }, [theme]);
   useEffect(() => { document.documentElement.style.setProperty("--radius", `${radius}px`); }, [radius]);
   useEffect(() => { document.documentElement.style.setProperty("--font-scale", String(FONT_SCALE[textSize])); }, [textSize]);
 
@@ -1297,6 +1330,27 @@ export function App() {
             <Text size="xs" tone="muted">kitchen sink</Text>
           </div>
           <div className="flex items-center gap-4">
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              theme
+              <Select value={theme} onValueChange={setTheme}>
+                <SelectTrigger className="w-52">
+                  <div className="flex items-center gap-2">
+                    <ThemeSwatches theme={theme} dark={dark} />
+                    {THEME_OPTIONS.find((t) => t.value === theme)?.label}
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  {THEME_OPTIONS.map((t) => (
+                    <SelectItem key={t.value} value={t.value}>
+                      <span className="flex items-center gap-2">
+                        <ThemeSwatches theme={t.value} dark={dark} />
+                        {t.label}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </label>
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
               text
               {(Object.keys(FONT_SCALE) as SizeBracket[]).map((b) => (
