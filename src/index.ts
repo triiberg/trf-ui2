@@ -262,3 +262,12 @@ export type { DataTableProps } from "./components/data-table";
 // Re-exported so apps type their columns without importing @tanstack/react-table directly.
 // (TanStack's `Row` is aliased to avoid colliding with the layout `Row` component.)
 export type { ColumnDef, CellContext, Row as DataTableRow } from "@tanstack/react-table";
+
+// --- Permissions ---
+export { PermsProvider, usePerms } from './context/PermsContext';
+export { RequireAccess } from './components/RequireAccess';
+export {
+  parsePerms, canRead, canManipulate, isLookup,
+  PERMS, SLOT_NONE, SLOT_READ, SLOT_LOOKUP, SLOT_MANIPULATE,
+} from './lib/permissions';
+export type { ServiceKey } from './lib/permissions';
