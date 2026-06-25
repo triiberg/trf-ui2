@@ -14,9 +14,9 @@ interface DatePickerBaseProps {
   /** Format a single date for the trigger label. Defaults to a locale medium date. */
   formatDate?: (date: Date) => string;
   /**
-   * Calendar header navigation. `"label"` (default) shows the month title with prev/next arrows;
-   * `"dropdown"` shows month + year dropdowns for faster jumping (also `"dropdown-months"` /
-   * `"dropdown-years"`).
+   * Calendar header navigation. `"dropdown"` (default) shows month + year dropdowns for fast
+   * jumping by month and year; `"label"` shows just the month title with prev/next arrows (one
+   * month at a time, no year jump). Also `"dropdown-months"` / `"dropdown-years"`.
    */
   captionLayout?: "label" | "dropdown" | "dropdown-months" | "dropdown-years";
   /** Earliest selectable/navigable month. Bounds the year dropdown. */
@@ -76,7 +76,7 @@ export function DatePicker(props: DatePickerProps) {
   const {
     placeholder = "Pick a date…",
     formatDate = defaultFormat,
-    captionLayout = "label",
+    captionLayout = "dropdown",
     startMonth,
     endMonth,
     disabledDates,
@@ -87,11 +87,12 @@ export function DatePicker(props: DatePickerProps) {
   } = props;
   const [open, setOpen] = React.useState(false);
 
-  // When a dropdown layout is requested without explicit bounds, default the year dropdown to a
-  // usable ±10-year window around now (otherwise the year list has nothing to range over).
+  // When a dropdown layout is used without explicit bounds, default the year dropdown to a usable
+  // window (past-heavy for accounting: historical periods/dates are common) around now, otherwise
+  // the year list has nothing to range over. Callers can override via startMonth/endMonth.
   const usesDropdown = captionLayout !== "label";
   const now = new Date();
-  const resolvedStart = startMonth ?? (usesDropdown ? new Date(now.getFullYear() - 10, 0) : undefined);
+  const resolvedStart = startMonth ?? (usesDropdown ? new Date(now.getFullYear() - 15, 0) : undefined);
   const resolvedEnd = endMonth ?? (usesDropdown ? new Date(now.getFullYear() + 10, 11) : undefined);
   const navProps = { captionLayout, startMonth: resolvedStart, endMonth: resolvedEnd } as const;
 

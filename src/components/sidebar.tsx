@@ -391,8 +391,24 @@ export function SidebarMenuSub({
 }) {
   const { collapsed, openGroups } = useSidebar();
   const open = !collapsed && openGroups.has(groupId);
+  const ref = React.useRef<HTMLDivElement>(null);
+  const prevOpen = React.useRef(open);
+  // When a group opens, the revealed children may render below the fold on short
+  // viewports — the menu appears not to react. After the expand animation, scroll
+  // the newly-shown items into view (minimally — `nearest` is a no-op if visible).
+  React.useEffect(() => {
+    if (open && !prevOpen.current) {
+      const id = window.setTimeout(() => {
+        ref.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      }, 210);
+      prevOpen.current = open;
+      return () => window.clearTimeout(id);
+    }
+    prevOpen.current = open;
+  }, [open]);
   return (
     <div
+      ref={ref}
       className="grid transition-[grid-template-rows] duration-200 ease-in-out"
       style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
     >
