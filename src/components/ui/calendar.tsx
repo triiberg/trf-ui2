@@ -10,11 +10,20 @@ export type CalendarProps = React.ComponentProps<typeof DayPicker>;
  * Month-grid calendar (react-day-picker), skinned entirely from tokens — light + dark, Lucide
  * chevrons. Usually composed inside {@link DatePicker}; use directly only for inline calendars.
  */
-export function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+export function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  hideNavigation = true,
+  ...props
+}: CalendarProps) {
   const defaults = getDefaultClassNames();
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      // Prev/next month arrows are hidden by default — month/year navigation happens through the
+      // dropdowns (captionLayout="dropdown"). Pass hideNavigation={false} to bring the arrows back.
+      hideNavigation={hideNavigation}
       className={cn("p-3", className)}
       classNames={{
         root: cn("w-fit", defaults.root),
