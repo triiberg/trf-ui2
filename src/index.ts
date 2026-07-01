@@ -279,4 +279,6 @@ export {
   clearLegacyOrgCookies,
 } from './lib/renewToken';
 export type { RenewResult, UseRenewingTokenOptions } from './lib/renewToken';
+export { installAuthInterceptors, authFetch, slugFromPath } from './lib/apiClient';
+export type { AuthInterceptorOptions } from './lib/apiClient';
 export type { ServiceKey } from './lib/permissions';
