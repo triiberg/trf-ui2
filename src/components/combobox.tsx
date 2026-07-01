@@ -12,6 +12,18 @@ import {
   CommandList,
 } from "./ui/command";
 
+/**
+ * Match if the search term is a prefix of any whitespace/punctuation-delimited token in the
+ * item text — not merely a substring anywhere. Prevents e.g. searching "43" from matching
+ * account code "1430" or "3043", while still matching "4300".
+ */
+function tokenPrefixFilter(itemValue: string, search: string): number {
+  const q = search.trim().toLowerCase();
+  if (!q) return 1;
+  const tokens = itemValue.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+  return tokens.some((t) => t.startsWith(q)) ? 1 : 0;
+}
+
 export interface ComboboxOption<T = unknown> {
   value: string;
   label: string;
@@ -94,7 +106,7 @@ export function Combobox<T = unknown>({
         align="start"
         className="w-[var(--radix-popover-trigger-width)] min-w-[12rem] p-0"
       >
-        <Command>
+        <Command filter={tokenPrefixFilter}>
           <CommandInput placeholder={searchPlaceholder} />
           {presets && presets.length > 1 && (
             <div className="flex flex-wrap gap-1 border-b border-border p-2">
