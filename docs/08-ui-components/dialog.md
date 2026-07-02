@@ -31,8 +31,9 @@ Controlled via `open` + `onOpenChange` on `Dialog`.
 
 - Confirm **destructive actions** (delete/cancel) with a Dialog.
 - Always include a `DialogTitle` (accessibility). Don't nest bordered boxes inside the content.
-- For non-modal hints use `Tooltip`/`Popover`; for menus use `DropdownMenu`.
+- For non-modal hints use `Tooltip`/`Popover`; for menus use `DropdownMenu`; for a movable/resizable
+  reference panel the user keeps working alongside, use `FloatingWindow` instead.
 
 ## Related
 
-- [DropdownMenu](dropdown-menu.md) · [combobox](combobox.md) (Popover)
+- [DropdownMenu](dropdown-menu.md) · [combobox](combobox.md) (Popover) · [FloatingWindow](floating-window.md)

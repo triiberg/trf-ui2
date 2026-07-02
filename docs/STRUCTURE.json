@@ -62,6 +62,7 @@
     "SecretReveal": "08-ui-components/feedback.md",
     "Card": "08-ui-components/cards.md",
     "Dialog": "08-ui-components/dialog.md",
+    "FloatingWindow": "08-ui-components/floating-window.md",
     "ConfirmDialog": "08-ui-components/confirm-dialog.md",
     "useConfirm": "08-ui-components/confirm-dialog.md",
     "Separator": "08-ui-components/separator.md",

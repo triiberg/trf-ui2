@@ -103,6 +103,16 @@ export {
   DialogDescription,
 } from "./components/ui/dialog";
 
+export {
+  FloatingWindow,
+  FloatingWindowTrigger,
+  FloatingWindowClose,
+  FloatingWindowPortal,
+  FloatingWindowContent,
+  FloatingWindowHeader,
+  FloatingWindowTitle,
+} from "./components/ui/floating-window";
+
 // --- Phase 2: forms & feedback ---
 
 export { Checkbox } from "./components/ui/checkbox";

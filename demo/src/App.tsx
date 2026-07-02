@@ -14,7 +14,9 @@ import {
   EditableGrid, type EditableGridColumn, type EditableGridRow,
   Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
   Checkbox, ConfirmDialog, useConfirm, Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader,
-  DialogTitle, DialogTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DialogTitle, DialogTrigger,
+  FloatingWindow, FloatingWindowClose, FloatingWindowContent, FloatingWindowHeader, FloatingWindowTitle, FloatingWindowTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
   CopyField, EmptyState, Field, Grow, H1, H2, H3, InfoField, InfoGrid, Input, Label, LoadingState, Markdown, SearchInput, SecretReveal,
   Logo, PageHeader, Row, Stack, StepCard, Text, RadioGroup, RadioGroupItem, Select, SelectContent,
@@ -544,6 +546,35 @@ function ConfirmDialogDemo() {
         {dialog}
       </div>
       {last ? <Text className="text-muted-foreground">Last action: {last}</Text> : null}
+    </div>
+  );
+}
+
+/* ------------------------------------------------ section: FloatingWindow */
+
+function FloatingWindowDemo() {
+  return (
+    <div className="flex flex-col items-start gap-3">
+      <FloatingWindow>
+        <FloatingWindowTrigger asChild>
+          <Button>View source document</Button>
+        </FloatingWindowTrigger>
+        <FloatingWindowContent className="flex h-96 max-w-md flex-col gap-3">
+          <FloatingWindowHeader>
+            <FloatingWindowTitle>invoice-source.pdf</FloatingWindowTitle>
+          </FloatingWindowHeader>
+          <div className="flex flex-1 items-center justify-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
+            Document preview goes here (e.g. an &lt;iframe&gt;)
+          </div>
+          <FloatingWindowClose asChild>
+            <Button variant="secondary" size="sm" className="self-end">Close</Button>
+          </FloatingWindowClose>
+        </FloatingWindowContent>
+      </FloatingWindow>
+      <Text size="xs" tone="muted">
+        Drag it aside by the header, resize from the bottom-right corner, and keep editing the
+        fields behind it — unlike Dialog, it never traps focus or blocks the page.
+      </Text>
     </div>
   );
 }
@@ -1180,6 +1211,7 @@ const GROUPS: GroupDef[] = [
         ),
       },
       { id: "confirm", label: "Confirm dialog", render: () => <ConfirmDialogDemo /> },
+      { id: "floating-window", label: "Floating window", render: () => <FloatingWindowDemo /> },
     ],
   },
   {
